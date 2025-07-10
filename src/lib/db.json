@@ -137,7 +137,16 @@
     }
   ],
   "salaryRecords": [],
-  "expenses": [],
+  "expenses": [
+    {
+      "id": "exp-1752180364800",
+      "date": "2025-07-10",
+      "item": "تسيت1 ",
+      "category": "أخرى",
+      "amount": 150,
+      "currency": "USD"
+    }
+  ],
   "leaves": [
     {
       "id": "leave-1672522500000",
