@@ -43,6 +43,7 @@ import { Label } from "@/components/ui/label"
 
 
 export default function ReportsPage() {
+    const [reportType, setReportType] = React.useState("attendance");
     const [date, setDate] = React.useState<DateRange | undefined>({
         from: new Date(),
         to: addDays(new Date(), 7),
@@ -87,16 +88,16 @@ export default function ReportsPage() {
                 <CardContent className="flex flex-col gap-4">
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="grid gap-2 flex-1">
-                            <Label htmlFor="report-type">نوع التقرير</Label>
-                            <Select defaultValue="daily">
-                                <SelectTrigger id="report-type" className="w-full">
+                            <Label htmlFor="report-type-select">نوع التقرير</Label>
+                            <Select value={reportType} onValueChange={setReportType}>
+                                <SelectTrigger id="report-type-select" className="w-full">
                                     <SelectValue placeholder="اختر النوع" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="daily">ملخص يومي</SelectItem>
-                                    <SelectItem value="weekly">تقرير أسبوعي</SelectItem>
-                                    <SelectItem value="monthly">تقرير شهري</SelectItem>
-                                    <SelectItem value="custom">نطاق مخصص</SelectItem>
+                                    <SelectItem value="attendance">الحضور</SelectItem>
+                                    <SelectItem value="absence">الغياب</SelectItem>
+                                    <SelectItem value="salaries">الرواتب</SelectItem>
+                                    <SelectItem value="employees">الموظفين</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
