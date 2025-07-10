@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Users, Clock, UserX, CheckCircle2 } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 import { attendanceRecords, getAttendanceStats, getEmployeesByStatus } from "@/lib/data"
 import { DashboardDetailCard } from "@/components/dashboard-detail-card"
 
@@ -52,7 +52,7 @@ export default function Dashboard() {
           title="الموظفون الحاضرون"
           value={stats.present}
           description="المتواجدون حالياً"
-          icon={Users}
+          icon="users"
           employees={presentEmployees}
           status="present"
         />
@@ -60,7 +60,7 @@ export default function Dashboard() {
           title="الوصول المتأخر"
           value={stats.late}
           description="حالات التأخر اليوم"
-          icon={Clock}
+          icon="clock"
           employees={lateEmployees}
           status="late"
           valueClassName="text-yellow-600"
@@ -69,7 +69,7 @@ export default function Dashboard() {
           title="الغائبون اليوم"
           value={stats.absent}
           description="الموظفون غير المتواجدين"
-          icon={UserX}
+          icon="userx"
           employees={absentEmployees}
           status="absent"
           valueClassName="text-destructive"

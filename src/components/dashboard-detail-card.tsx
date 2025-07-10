@@ -1,7 +1,9 @@
 
 "use client"
 
-import type { LucideIcon } from "lucide-react"
+import type { LucideIcon, LucideProps } from "lucide-react"
+import { Users, Clock, UserX } from "lucide-react"
+import * as React from "react"
 import {
   Card,
   CardContent,
@@ -28,11 +30,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { Employee } from "@/lib/data"
 import { cn } from "@/lib/utils"
 
+const iconMap = {
+    users: Users,
+    clock: Clock,
+    userx: UserX
+}
+
 interface DashboardDetailCardProps {
   title: string;
   value: number;
   description: string;
-  icon: LucideIcon;
+  icon: keyof typeof iconMap;
   employees: Employee[];
   status: 'present' | 'late' | 'absent';
   valueClassName?: string;
@@ -44,7 +52,8 @@ const statusTitles = {
     absent: "قائمة الموظفين الغائبين"
 }
 
-export function DashboardDetailCard({ title, value, description, icon: Icon, employees, status, valueClassName }: DashboardDetailCardProps) {
+export function DashboardDetailCard({ title, value, description, icon, employees, status, valueClassName }: DashboardDetailCardProps) {
+  const Icon = iconMap[icon] as React.FC<LucideProps>;
   return (
     <Dialog>
       <DialogTrigger asChild>
