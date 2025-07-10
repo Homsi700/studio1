@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 export const metadata: Metadata = {
-  title: 'دوام تراك',
+  title: 'دوامي',
   description: 'نظام متكامل لمراقبة الدوام باستخدام البصمة.',
 };
 

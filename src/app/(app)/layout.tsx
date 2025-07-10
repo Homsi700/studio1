@@ -54,7 +54,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarHeader>
           <div className="flex items-center gap-2 p-2">
             <Fingerprint className="w-8 h-8 text-primary" />
-            <h1 className="text-xl font-semibold text-primary">دوام تراك</h1>
+            <h1 className="text-xl font-semibold text-primary">دوامي</h1>
           </div>
         </SidebarHeader>
         <SidebarContent className="p-2">
@@ -105,7 +105,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">المدير</p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    admin@doamtrack.com
+                    admin@dawamy.com
                   </p>
                 </div>
               </DropdownMenuLabel>
