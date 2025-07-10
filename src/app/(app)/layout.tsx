@@ -47,6 +47,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     { href: "/employees", label: "الموظفون", icon: Users },
     { href: "/reports", label: "التقارير", icon: FileText },
     { href: "/anomalies", label: "كشف التجاوزات (AI)", icon: AlertTriangle },
+    { href: "/settings", label: "الإعدادات", icon: Settings },
   ];
 
   return (
@@ -76,14 +77,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-           <SidebarMenu>
-              <SidebarMenuItem>
-                 <SidebarMenuButton tooltip={{ children: "الإعدادات", side: "left" }}>
-                    <Settings/>
-                    <span>الإعدادات</span>
-                 </SidebarMenuButton>
-              </SidebarMenuItem>
-           </SidebarMenu>
+           {/* Can be used for other links */}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>

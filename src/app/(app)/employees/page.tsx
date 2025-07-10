@@ -34,7 +34,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { MoreHorizontal, PlusCircle } from "lucide-react"
 import { employees as initialEmployees, type Employee } from "@/lib/data"
@@ -44,10 +43,10 @@ export default function EmployeesPage() {
   const [employees, setEmployees] = React.useState<Employee[]>(initialEmployees);
   const [deleteTarget, setDeleteTarget] = React.useState<Employee | null>(null);
 
-  const handleSaveEmployee = (employeeData: Employee) => {
+  const handleSaveEmployee = (employeeData: Omit<Employee, "status"> & {status?: "نشط" | "في إجازة"}) => {
     const isEditing = employees.some(e => e.id === employeeData.id);
     if (isEditing) {
-      setEmployees(employees.map(e => e.id === employeeData.id ? employeeData : e));
+      setEmployees(employees.map(e => e.id === employeeData.id ? {...e, ...employeeData} : e));
     } else {
       setEmployees([...employees, { ...employeeData, status: "نشط" }]);
     }
@@ -88,6 +87,8 @@ export default function EmployeesPage() {
                   <TableHead>الرقم الوظيفي</TableHead>
                   <TableHead>الاسم</TableHead>
                   <TableHead>القسم</TableHead>
+                  <TableHead>المسمى الوظيفي</TableHead>
+                  <TableHead>الوردية</TableHead>
                   <TableHead>الحالة</TableHead>
                   <TableHead>
                     <span className="sr-only">إجراءات</span>
@@ -100,6 +101,8 @@ export default function EmployeesPage() {
                     <TableCell className="font-mono text-left">{employee.id}</TableCell>
                     <TableCell className="font-medium">{employee.name}</TableCell>
                     <TableCell>{employee.department}</TableCell>
+                    <TableCell>{employee.jobTitle}</TableCell>
+                    <TableCell>{employee.shift}</TableCell>
                     <TableCell>
                       <Badge variant={employee.status === "نشط" ? "default" : "secondary"}
                         className={employee.status === "نشط" ? "bg-green-600 text-white" : ""}>

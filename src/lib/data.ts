@@ -1,7 +1,20 @@
+export type JobTitle = {
+  id: string;
+  name: string;
+};
+
+export type Shift = {
+  id: string;
+  name: string;
+  time: string; // e.g., "9ص - 5م"
+};
+
 export type Employee = {
   id: string;
   name: string;
   department: string;
+  jobTitle: string;
+  shift: string;
   status: "نشط" | "في إجازة";
 };
 
@@ -14,13 +27,26 @@ export type AttendanceRecord = {
   avatar: string;
 };
 
+export const jobTitles: JobTitle[] = [
+  { id: "jt-1", name: "مهندس برمجيات" },
+  { id: "jt-2", name: "مدير موارد بشرية" },
+  { id: "jt-3", name: "مسوق رقمي" },
+  { id: "jt-4", name: "محاسب" },
+];
+
+export const shifts: Shift[] = [
+  { id: "sh-1", name: "الوردية الصباحية", time: "8ص - 4م" },
+  { id: "sh-2", name: "الوردية المسائية", time: "4م - 12ص" },
+  { id: "sh-3", name: "دوام مرن", time: "غير محدد" },
+];
+
 export const employees: Employee[] = [
-  { id: "EMP001", name: "أحمد الفارسي", department: "الهندسة", status: "نشط" },
-  { id: "EMP002", name: "فاطمة الزهراني", department: "الموارد البشرية", status: "نشط" },
-  { id: "EMP003", name: "يوسف المنصوري", department: "التسويق", status: "في إجازة" },
-  { id: "EMP004", name: "نورة الحمادي", department: "الهندسة", status: "نشط" },
-  { id: "EMP005", name: "خالد العامري", department: "المالية", status: "نشط" },
-  { id: "EMP006", name: "مريم الكعبي", department: "التسويق", status: "نشط" },
+  { id: "EMP001", name: "أحمد الفارسي", department: "الهندسة", jobTitle: "مهندس برمجيات", shift: "الوردية الصباحية", status: "نشط" },
+  { id: "EMP002", name: "فاطمة الزهراني", department: "الموارد البشرية", jobTitle: "مدير موارد بشرية", shift: "الوردية الصباحية", status: "نشط" },
+  { id: "EMP003", name: "يوسف المنصوري", department: "التسويق", jobTitle: "مسوق رقمي", shift: "الوردية المسائية", status: "في إجازة" },
+  { id: "EMP004", name: "نورة الحمادي", department: "الهندسة", jobTitle: "مهندس برمجيات", shift: "الوردية الصباحية", status: "نشط" },
+  { id: "EMP005", name: "خالد العامري", department: "المالية", jobTitle: "محاسب", shift: "دوام مرن", status: "نشط" },
+  { id: "EMP006", name: "مريم الكعبي", department: "التسويق", jobTitle: "مسوق رقمي", shift: "الوردية المسائية", status: "نشط" },
 ];
 
 export const attendanceRecords: AttendanceRecord[] = [
@@ -47,19 +73,13 @@ export const getEmployeesByStatus = (status: 'present' | 'late' | 'absent'): Emp
     const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
 
     if (!isWorkHours) return [];
+    const activeEmployees = employees.filter(e => e.status === 'نشط');
 
     if (status === 'present') {
-        return [
-            { id: "EMP001", name: "أحمد الفارسي", department: "الهندسة", status: "نشط" },
-            { id: "EMP004", name: "نورة الحمادي", department: "الهندسة", status: "نشط" },
-            { id: "EMP005", name: "خالد العامري", department: "المالية", status: "نشط" },
-            { id: "EMP006", name: "مريم الكعبي", department: "التسويق", status: "نشط" },
-        ];
+        return activeEmployees.filter(e => e.id !== "EMP002");
     }
     if (status === 'late') {
-        return [
-            { id: "EMP002", name: "فاطمة الزهراني", department: "الموارد البشرية", status: "نشط" },
-        ];
+        return activeEmployees.filter(e => e.id === "EMP002");
     }
     if (status === 'absent') {
          return employees.filter(e => e.status === "في إجازة");

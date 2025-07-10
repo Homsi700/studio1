@@ -21,13 +21,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { type Employee } from "@/lib/data"
+import { type Employee, jobTitles, shifts } from "@/lib/data"
 import { useToast } from "@/hooks/use-toast"
 
 interface EmployeeDialogProps {
   children: ReactNode;
   employee?: Employee;
-  onSave: (employee: Employee) => void;
+  onSave: (employee: Omit<Employee, "status"> & {status?: "نشط" | "في إجازة"}) => void;
 }
 
 export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogProps) {
@@ -35,20 +35,28 @@ export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogPro
   const [isOpen, setIsOpen] = useState(false);
   const isEditMode = !!employee;
 
-  const [name, setName] = useState(employee?.name || "");
-  const [employeeId, setEmployeeId] = useState(employee?.id || "");
-  const [department, setDepartment] = useState(employee?.department || "");
+  const [name, setName] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
+  const [department, setDepartment] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [shift, setShift] = useState("");
 
-  useEffect(() => {
-    if (isOpen) {
+  const resetForm = () => {
       setName(employee?.name || "");
       setEmployeeId(employee?.id || "");
       setDepartment(employee?.department || "");
+      setJobTitle(employee?.jobTitle || "");
+      setShift(employee?.shift || "");
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      resetForm();
     }
   }, [isOpen, employee]);
 
   const handleSubmit = () => {
-    if (!name || !employeeId || !department) {
+    if (!name || !employeeId || !department || !jobTitle || !shift) {
       toast({
         variant: "destructive",
         title: "خطأ",
@@ -60,7 +68,9 @@ export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogPro
       id: employeeId,
       name,
       department,
-      status: employee?.status || "نشط",
+      jobTitle,
+      shift,
+      ...(isEditMode && { status: employee.status })
     });
     setIsOpen(false);
     toast({
@@ -106,6 +116,36 @@ export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogPro
                     <SelectItem value="الموارد البشرية">الموارد البشرية</SelectItem>
                     <SelectItem value="التسويق">التسويق</SelectItem>
                     <SelectItem value="المالية">المالية</SelectItem>
+                </SelectContent>
+            </Select>
+          </div>
+           <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="jobTitle" className="text-right">
+              المسمى الوظيفي
+            </Label>
+            <Select value={jobTitle} onValueChange={setJobTitle}>
+                <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="اختر المسمى" />
+                </SelectTrigger>
+                <SelectContent>
+                    {jobTitles.map((jt) => (
+                        <SelectItem key={jt.id} value={jt.name}>{jt.name}</SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+          </div>
+           <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="shift" className="text-right">
+              الوردية
+            </Label>
+            <Select value={shift} onValueChange={setShift}>
+                <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="اختر الوردية" />
+                </SelectTrigger>
+                <SelectContent>
+                    {shifts.map((s) => (
+                        <SelectItem key={s.id} value={s.name}>{s.name} ({s.time})</SelectItem>
+                    ))}
                 </SelectContent>
             </Select>
           </div>
