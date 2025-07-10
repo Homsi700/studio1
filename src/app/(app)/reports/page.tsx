@@ -37,7 +37,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { getAttendanceRecords, type AttendanceRecord } from "@/lib/data"
+import { getAttendanceRecords } from "@/actions/attendance-actions"
+import type { AttendanceRecord } from "@/lib/data"
 
 
 export default function ReportsPage() {

@@ -45,8 +45,8 @@ import {
     addEmployee,
     updateEmployee,
     deleteEmployee,
-    type Employee, type JobTitle, type Shift
-} from "@/lib/data"
+} from "@/actions/employee-actions";
+import type { Employee, JobTitle, Shift } from "@/lib/data"
 import { EmployeeDialog } from "@/components/employee-dialog"
 
 export default function EmployeesPage() {
@@ -55,29 +55,30 @@ export default function EmployeesPage() {
   const [shifts, setShifts] = React.useState<Shift[]>([]);
   const [deleteTarget, setDeleteTarget] = React.useState<Employee | null>(null);
 
+  const loadData = React.useCallback(async () => {
+    const [emps, jts, shs] = await Promise.all([
+        getEmployees(),
+        getJobTitles(),
+        getShifts()
+    ]);
+    setEmployees(emps);
+    setJobTitles(jts);
+    setShifts(shs);
+  }, []);
+
   React.useEffect(() => {
-    async function loadData() {
-        const [emps, jts, shs] = await Promise.all([
-            getEmployees(),
-            getJobTitles(),
-            getShifts()
-        ]);
-        setEmployees(emps);
-        setJobTitles(jts);
-        setShifts(shs);
-    }
     loadData();
-  }, [])
+  }, [loadData])
 
   const handleSaveEmployee = async (employeeData: Employee) => {
     const isEditing = employees.some(e => e.id === employeeData.id);
     if (isEditing) {
       await updateEmployee(employeeData);
     } else {
-      await addEmployee(employeeData);
+      const newEmployeeData = { ...employeeData, status: "نشط" } as Omit<Employee, 'status'> & { status: "نشط" };
+      await addEmployee(newEmployeeData);
     }
-    const updatedEmployees = await getEmployees();
-    setEmployees(updatedEmployees);
+    await loadData();
   };
 
   const handleDeleteEmployee = async (employeeId: string) => {

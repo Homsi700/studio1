@@ -17,7 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { CheckCircle2 } from "lucide-react"
-import { getAttendanceRecords, getAttendanceStats, getEmployeesByStatus } from "@/lib/data"
+import { getAttendanceRecords, getAttendanceStats, getEmployeesByStatus } from "@/actions/attendance-actions"
 import { DashboardDetailCard } from "@/components/dashboard-detail-card"
 
 export default async function Dashboard() {

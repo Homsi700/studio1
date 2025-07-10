@@ -14,17 +14,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { PlusCircle, Trash2, Edit, Save } from "lucide-react";
 import {
-  getJobTitles,
-  getShifts,
-  addJobTitle,
-  updateJobTitle,
-  deleteJobTitle,
-  addShift,
-  updateShift,
-  deleteShift,
-  type JobTitle,
-  type Shift,
-} from "@/lib/data";
+    getJobTitles,
+    getShifts,
+    addJobTitle,
+    updateJobTitle,
+    deleteJobTitle,
+    addShift,
+    updateShift,
+    deleteShift,
+} from "@/actions/settings-actions";
+import type { JobTitle, Shift } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
 
 export default function SettingsPage() {
@@ -40,20 +39,15 @@ export default function SettingsPage() {
   const [editingShiftName, setEditingShiftName] = React.useState("");
   const [editingShiftTime, setEditingShiftTime] = React.useState("");
 
-  React.useEffect(() => {
-      async function loadData() {
-          const [jts, shs] = await Promise.all([getJobTitles(), getShifts()]);
-          setJobTitles(jts);
-          setShifts(shs);
-      }
-      loadData();
-  }, []);
-
-  const refreshData = async () => {
+  const refreshData = React.useCallback(async () => {
       const [jts, shs] = await Promise.all([getJobTitles(), getShifts()]);
       setJobTitles(jts);
       setShifts(shs);
-  };
+  }, []);
+
+  React.useEffect(() => {
+      refreshData();
+  }, [refreshData]);
 
   // Job Title Handlers
   const handleAddJobTitle = async () => {
