@@ -3,7 +3,6 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription
 } from "@/components/ui/card"
 
 export default function SalariesPage() {
