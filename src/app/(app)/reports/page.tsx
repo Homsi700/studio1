@@ -3,6 +3,7 @@
 
 import * as React from "react"
 import { addDays, format } from "date-fns"
+import { arSA } from "date-fns/locale"
 import { Calendar as CalendarIcon, Download } from "lucide-react"
 import type { DateRange } from "react-day-picker"
 
@@ -113,7 +114,7 @@ export default function ReportsPage() {
                                     !date && "text-muted-foreground"
                                     )}
                                 >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    <CalendarIcon className="ml-2 h-4 w-4" />
                                     {date?.from ? (
                                     date.to ? (
                                         <>
@@ -136,6 +137,7 @@ export default function ReportsPage() {
                                     selected={date}
                                     onSelect={setDate}
                                     numberOfMonths={2}
+                                    locale={arSA}
                                 />
                                 </PopoverContent>
                             </Popover>
@@ -144,7 +146,7 @@ export default function ReportsPage() {
                      <div className="flex justify-end gap-2 pt-4">
                         <Button>إنشاء تقرير</Button>
                         <Button variant="outline">
-                            <Download className="mr-2 h-4 w-4" />
+                            <Download className="ml-2 h-4 w-4" />
                             تصدير
                         </Button>
                     </div>
