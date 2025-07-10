@@ -1,30 +1,140 @@
 {
   "jobTitles": [
-    { "id": "jt-1", "name": "مهندس برمجيات" },
-    { "id": "jt-2", "name": "مدير موارد بشرية" },
-    { "id": "jt-3", "name": "مسوق رقمي" },
-    { "id": "jt-4", "name": "محاسب" }
+    {
+      "id": "jt-1",
+      "name": "مهندس برمجيات"
+    },
+    {
+      "id": "jt-2",
+      "name": "مدير موارد بشرية"
+    },
+    {
+      "id": "jt-3",
+      "name": "مسوق رقمي"
+    },
+    {
+      "id": "jt-4",
+      "name": "محاسب"
+    }
   ],
   "shifts": [
-    { "id": "sh-1", "name": "الوردية الصباحية", "time": "8ص - 4م" },
-    { "id": "sh-2", "name": "الوردية المسائية", "time": "4م - 12ص" },
-    { "id": "sh-3", "name": "دوام مرن", "time": "غير محدد" }
+    {
+      "id": "sh-1",
+      "name": "الوردية الصباحية",
+      "time": "8ص - 4م"
+    },
+    {
+      "id": "sh-2",
+      "name": "الوردية المسائية",
+      "time": "4م - 12ص"
+    },
+    {
+      "id": "sh-3",
+      "name": "دوام مرن",
+      "time": "غير محدد"
+    }
   ],
   "employees": [
-    { "id": "1001", "name": "أحمد الفارسي", "department": "الهندسة", "jobTitle": "مهندس برمجيات", "shift": "الوردية الصباحية", "salary": 2000, "currency": "USD", "status": "نشط" },
-    { "id": "1002", "name": "فاطمة الزهراني", "department": "الموارد البشرية", "jobTitle": "مدير موارد بشرية", "shift": "الوردية الصباحية", "salary": 18000000, "currency": "SYP", "status": "نشط" },
-    { "id": "1003", "name": "يوسف المنصوري", "department": "التسويق", "jobTitle": "مسوق رقمي", "shift": "الوردية المسائية", "salary": 1500, "currency": "USD", "status": "في إجازة" },
-    { "id": "1004", "name": "نورة الحمادي", "department": "الهندسة", "jobTitle": "مهندس برمجيات", "shift": "الوردية الصباحية", "salary": 2000, "currency": "USD", "status": "نشط" },
-    { "id": "1005", "name": "خالد العامري", "department": "المالية", "jobTitle": "محاسب", "shift": "دوام مرن", "salary": 15000000, "currency": "SYP", "status": "نشط" },
-    { "id": "1006", "name": "مريم الكعبي", "department": "التسويق", "jobTitle": "مسوق رقمي", "shift": "الوردية المسائية", "salary": 1500, "currency": "USD", "status": "نشط" }
+    {
+      "id": "1001",
+      "name": "أحمد الفارسي",
+      "department": "الهندسة",
+      "jobTitle": "مهندس برمجيات",
+      "shift": "الوردية الصباحية",
+      "salary": 2000,
+      "currency": "USD",
+      "status": "نشط"
+    },
+    {
+      "id": "1002",
+      "name": "فاطمة الزهراني",
+      "department": "الموارد البشرية",
+      "jobTitle": "مدير موارد بشرية",
+      "shift": "الوردية الصباحية",
+      "salary": 18000000,
+      "currency": "SYP",
+      "status": "نشط"
+    },
+    {
+      "id": "1003",
+      "name": "يوسف المنصوري",
+      "department": "التسويق",
+      "jobTitle": "مسوق رقمي",
+      "shift": "الوردية المسائية",
+      "salary": 1500,
+      "currency": "USD",
+      "status": "في إجازة"
+    },
+    {
+      "id": "1005",
+      "name": "خالد العامري",
+      "department": "المالية",
+      "jobTitle": "محاسب",
+      "shift": "دوام مرن",
+      "salary": 15000000,
+      "currency": "SYP",
+      "status": "نشط"
+    },
+    {
+      "id": "4563",
+      "name": "تسيت 1",
+      "department": "الموارد البشرية",
+      "jobTitle": "مسوق رقمي",
+      "shift": "الوردية الصباحية",
+      "salary": 100,
+      "currency": "USD",
+      "status": "نشط"
+    }
   ],
   "attendanceRecords": [
-      { "id": "REC001", "employeeName": "أحمد الفارسي", "employeeId": "1001", "timestamp": "08:05 ص", "status": "حضور", "avatar": "https://placehold.co/40x40.png?text=AF" },
-      { "id": "REC002", "employeeName": "فاطمة الزهراني", "employeeId": "1002", "timestamp": "08:15 ص", "status": "تأخر", "avatar": "https://placehold.co/40x40.png?text=FZ" },
-      { "id": "REC003", "employeeName": "نورة الحمادي", "employeeId": "1004", "timestamp": "08:30 ص", "status": "حضور", "avatar": "https://placehold.co/40x40.png?text=NH" },
-      { "id": "REC004", "employeeName": "خالد العامري", "employeeId": "1005", "timestamp": "05:00 م", "status": "انصراف", "avatar": "https://placehold.co/40x40.png?text=KA" },
-      { "id": "REC005", "employeeName": "مريم الكعبي", "employeeId": "1006", "timestamp": "04:45 م", "status": "انصراف مبكر", "avatar": "https://placehold.co/40x40.png?text=MK" },
-      { "id": "REC006", "employeeName": "أحمد الفارسي", "employeeId": "1001", "timestamp": "05:02 م", "status": "انصراف", "avatar": "https://placehold.co/40x40.png?text=AF" }
+    {
+      "id": "REC001",
+      "employeeName": "أحمد الفارسي",
+      "employeeId": "1001",
+      "timestamp": "08:05 ص",
+      "status": "حضور",
+      "avatar": "https://placehold.co/40x40.png?text=AF"
+    },
+    {
+      "id": "REC002",
+      "employeeName": "فاطمة الزهراني",
+      "employeeId": "1002",
+      "timestamp": "08:15 ص",
+      "status": "تأخر",
+      "avatar": "https://placehold.co/40x40.png?text=FZ"
+    },
+    {
+      "id": "REC003",
+      "employeeName": "نورة الحمادي",
+      "employeeId": "1004",
+      "timestamp": "08:30 ص",
+      "status": "حضور",
+      "avatar": "https://placehold.co/40x40.png?text=NH"
+    },
+    {
+      "id": "REC004",
+      "employeeName": "خالد العامري",
+      "employeeId": "1005",
+      "timestamp": "05:00 م",
+      "status": "انصراف",
+      "avatar": "https://placehold.co/40x40.png?text=KA"
+    },
+    {
+      "id": "REC005",
+      "employeeName": "مريم الكعبي",
+      "employeeId": "1006",
+      "timestamp": "04:45 م",
+      "status": "انصراف مبكر",
+      "avatar": "https://placehold.co/40x40.png?text=MK"
+    },
+    {
+      "id": "REC006",
+      "employeeName": "أحمد الفارسي",
+      "employeeId": "1001",
+      "timestamp": "05:02 م",
+      "status": "انصراف",
+      "avatar": "https://placehold.co/40x40.png?text=AF"
+    }
   ],
   "salaryRecords": [],
   "expenses": []
