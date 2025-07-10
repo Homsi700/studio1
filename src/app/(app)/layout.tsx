@@ -87,11 +87,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <Link href={item.href}>
                   <SidebarMenuButton
+                    asChild
                     isActive={pathname === item.href}
                     tooltip={{ children: item.label, side: "left" }}
                   >
-                    <item.icon />
-                    <span>{item.label}</span>
+                    <span>
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </span>
                   </SidebarMenuButton>
                 </Link>
               </SidebarMenuItem>
