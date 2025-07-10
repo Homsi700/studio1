@@ -28,18 +28,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useToast } from "@/hooks/use-toast";
 
 
 export default function SalariesPage() {
     const [employees, setEmployees] = React.useState<Employee[]>([]);
+    const { toast } = useToast();
+
+    const loadData = React.useCallback(async () => {
+        const emps = await getEmployees();
+        setEmployees(emps.filter(e => e.status === 'نشط'));
+    }, []);
 
     React.useEffect(() => {
-        async function loadData() {
-            const emps = await getEmployees();
-            setEmployees(emps.filter(e => e.status === 'نشط'));
-        }
         loadData();
-    }, []);
+    }, [loadData]);
+
+    const handleGeneratePayroll = () => {
+        loadData();
+        toast({
+            title: "نجاح",
+            description: "تم إنشاء كشف الرواتب بنجاح.",
+            className: "bg-green-600 text-white border-green-600",
+        });
+    };
 
     const formatCurrency = (amount: number, currency: 'USD' | 'SYP') => {
         return new Intl.NumberFormat('en-US', {
@@ -75,7 +87,7 @@ export default function SalariesPage() {
                         </Select>
                     </div>
                     <div className="flex gap-2 w-full md:w-auto md:ml-auto">
-                        <Button className="w-full md:w-auto">إنشاء كشف رواتب</Button>
+                        <Button onClick={handleGeneratePayroll} className="w-full md:w-auto">إنشاء كشف رواتب</Button>
                         <Button variant="outline" className="w-full md:w-auto">
                             <Download className="mr-2 h-4 w-4" />
                             تصدير
