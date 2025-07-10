@@ -35,9 +35,35 @@ export const attendanceRecords: AttendanceRecord[] = [
 export const getAttendanceStats = () => {
     const now = new Date();
     const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
-    const present = isWorkHours ? employees.filter(e => e.status === 'نشط').length - 2 : 0;
+    const present = isWorkHours ? 4 : 0;
     const late = isWorkHours ? 1 : 0;
-    const absent = employees.length - present - late;
+    const absent = employees.filter(e => e.status === 'نشط').length - present - late;
 
     return { present, late, absent };
+}
+
+export const getEmployeesByStatus = (status: 'present' | 'late' | 'absent'): Employee[] => {
+    const now = new Date();
+    const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
+
+    if (!isWorkHours) return [];
+
+    if (status === 'present') {
+        return [
+            { id: "EMP001", name: "أحمد الفارسي", department: "الهندسة", status: "نشط" },
+            { id: "EMP004", name: "نورة الحمادي", department: "الهندسة", status: "نشط" },
+            { id: "EMP005", name: "خالد العامري", department: "المالية", status: "نشط" },
+            { id: "EMP006", name: "مريم الكعبي", department: "التسويق", status: "نشط" },
+        ];
+    }
+    if (status === 'late') {
+        return [
+            { id: "EMP002", name: "فاطمة الزهراني", department: "الموارد البشرية", status: "نشط" },
+        ];
+    }
+    if (status === 'absent') {
+         return employees.filter(e => e.status === "في إجازة");
+    }
+
+    return [];
 }

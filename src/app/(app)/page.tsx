@@ -16,10 +16,14 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Users, Clock, UserX, CheckCircle2 } from "lucide-react"
-import { attendanceRecords, getAttendanceStats } from "@/lib/data"
+import { attendanceRecords, getAttendanceStats, getEmployeesByStatus } from "@/lib/data"
+import { DashboardDetailCard } from "@/components/dashboard-detail-card"
 
 export default function Dashboard() {
   const stats = getAttendanceStats();
+  const presentEmployees = getEmployeesByStatus("present");
+  const lateEmployees = getEmployeesByStatus("late");
+  const absentEmployees = getEmployeesByStatus("absent");
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -44,42 +48,32 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              الموظفون الحاضرون
-            </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.present}</div>
-            <p className="text-xs text-muted-foreground">
-              المتواجدون حالياً
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">الوصول المتأخر</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{stats.late}</div>
-            <p className="text-xs text-muted-foreground">حالات التأخر اليوم</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">الغائبون اليوم</CardTitle>
-            <UserX className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive">{stats.absent}</div>
-            <p className="text-xs text-muted-foreground">
-              الموظفون غير المتواجدين
-            </p>
-          </CardContent>
-        </Card>
+        <DashboardDetailCard
+          title="الموظفون الحاضرون"
+          value={stats.present}
+          description="المتواجدون حالياً"
+          icon={Users}
+          employees={presentEmployees}
+          status="present"
+        />
+        <DashboardDetailCard
+          title="الوصول المتأخر"
+          value={stats.late}
+          description="حالات التأخر اليوم"
+          icon={Clock}
+          employees={lateEmployees}
+          status="late"
+          valueClassName="text-yellow-600"
+        />
+        <DashboardDetailCard
+          title="الغائبون اليوم"
+          value={stats.absent}
+          description="الموظفون غير المتواجدين"
+          icon={UserX}
+          employees={absentEmployees}
+          status="absent"
+          valueClassName="text-destructive"
+        />
          <Card className="bg-primary text-primary-foreground">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
