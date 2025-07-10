@@ -34,22 +34,26 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { MoreHorizontal, PlusCircle } from "lucide-react"
-import { employees as initialEmployees, type Employee } from "@/lib/data"
+import { employees as initialEmployees, type Employee, jobTitles as initialJobTitles, shifts as initialShifts } from "@/lib/data"
 import { EmployeeDialog } from "@/components/employee-dialog"
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = React.useState<Employee[]>(initialEmployees);
   const [deleteTarget, setDeleteTarget] = React.useState<Employee | null>(null);
 
-  const handleSaveEmployee = (employeeData: Omit<Employee, "status"> & {status?: "نشط" | "في إجازة"}) => {
+  // In a real app, this data would be fetched or managed globally
+  const [jobTitles, setJobTitles] = React.useState(initialJobTitles);
+  const [shifts, setShifts] = React.useState(initialShifts);
+
+
+  const handleSaveEmployee = (employeeData: Employee) => {
     const isEditing = employees.some(e => e.id === employeeData.id);
     if (isEditing) {
-      setEmployees(employees.map(e => e.id === employeeData.id ? {...e, ...employeeData} : e));
+      setEmployees(employees.map(e => e.id === employeeData.id ? employeeData : e));
     } else {
-      setEmployees([...employees, { ...employeeData, status: "نشط" }]);
+      setEmployees([...employees, employeeData]);
     }
   };
 
@@ -66,7 +70,7 @@ export default function EmployeesPage() {
             <h1 className="text-3xl font-bold">إدارة الموظفين</h1>
             <p className="text-muted-foreground">إضافة وتعديل وإدارة بيانات الموظفين.</p>
           </div>
-          <EmployeeDialog onSave={handleSaveEmployee}>
+          <EmployeeDialog onSave={handleSaveEmployee} jobTitles={jobTitles} shifts={shifts}>
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
               إضافة موظف
@@ -85,7 +89,7 @@ export default function EmployeesPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>الرقم الوظيفي</TableHead>
+                  <TableHead>الرقم التعريفي</TableHead>
                   <TableHead>الاسم</TableHead>
                   <TableHead>القسم</TableHead>
                   <TableHead>المسمى الوظيفي</TableHead>
@@ -119,7 +123,7 @@ export default function EmployeesPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <EmployeeDialog employee={employee} onSave={handleSaveEmployee}>
+                           <EmployeeDialog employee={employee} onSave={handleSaveEmployee} jobTitles={jobTitles} shifts={shifts}>
                             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>تعديل</DropdownMenuItem>
                           </EmployeeDialog>
                           <AlertDialogTrigger asChild>

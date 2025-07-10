@@ -21,32 +21,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { type Employee, jobTitles, shifts } from "@/lib/data"
+import { type Employee, type JobTitle, type Shift } from "@/lib/data"
 import { useToast } from "@/hooks/use-toast"
+import { Fingerprint } from "lucide-react"
 
 interface EmployeeDialogProps {
   children: ReactNode;
   employee?: Employee;
-  onSave: (employee: Omit<Employee, "status"> & {status?: "نشط" | "في إجازة"}) => void;
+  onSave: (employee: Employee) => void;
+  jobTitles: JobTitle[];
+  shifts: Shift[];
 }
 
-export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogProps) {
+export function EmployeeDialog({ children, employee, onSave, jobTitles, shifts }: EmployeeDialogProps) {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const isEditMode = !!employee;
 
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [employeeId, setEmployeeId] = useState("");
   const [department, setDepartment] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [shift, setShift] = useState("");
+  const [fingerprintScanned, setFingerprintScanned] = useState(false);
 
   const resetForm = () => {
-      setName(employee?.name || "");
-      setEmployeeId(employee?.id || "");
-      setDepartment(employee?.department || "");
-      setJobTitle(employee?.jobTitle || "");
-      setShift(employee?.shift || "");
+    setId(employee?.id || "");
+    setName(employee?.name || "");
+    setDepartment(employee?.department || "");
+    setJobTitle(employee?.jobTitle || "");
+    setShift(employee?.shift || "");
+    setFingerprintScanned(isEditMode); // Assume fingerprint is already scanned in edit mode
   }
 
   useEffect(() => {
@@ -55,8 +60,25 @@ export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogPro
     }
   }, [isOpen, employee]);
 
+  const handleScanFingerprint = () => {
+    if (!id || id.length !== 4 || !/^\d{4}$/.test(id)) {
+        toast({
+            variant: "destructive",
+            title: "خطأ",
+            description: "يرجى إدخال رقم تعريفي فريد وصحيح مكون من 4 أرقام أولاً.",
+        });
+        return;
+    }
+    // Simulate fingerprint scanning
+    setFingerprintScanned(true);
+    toast({
+        title: "نجاح",
+        description: `تم ربط البصمة بالرقم التعريفي ${id}.`,
+    });
+  }
+
   const handleSubmit = () => {
-    if (!name || !employeeId || !department || !jobTitle || !shift) {
+    if (!id || !name || !department || !jobTitle || !shift) {
       toast({
         variant: "destructive",
         title: "خطأ",
@@ -64,14 +86,24 @@ export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogPro
       });
       return;
     }
+    if (!fingerprintScanned) {
+         toast({
+            variant: "destructive",
+            title: "خطأ",
+            description: "يرجى مسح بصمة الموظف قبل الحفظ.",
+        });
+        return;
+    }
+
     onSave({
-      id: employeeId,
+      id,
       name,
       department,
       jobTitle,
       shift,
-      ...(isEditMode && { status: employee.status })
+      status: employee?.status || "نشط",
     });
+
     setIsOpen(false);
     toast({
         title: "نجاح",
@@ -91,17 +123,25 @@ export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogPro
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
+           <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="employeeId" className="text-right">
+              الرقم التعريفي
+            </Label>
+            <Input 
+              id="employeeId" 
+              value={id} 
+              onChange={(e) => setId(e.target.value)} 
+              className="col-span-3 font-mono" 
+              disabled={isEditMode}
+              placeholder="4 أرقام فريدة"
+              maxLength={4}
+            />
+          </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               الاسم
             </Label>
             <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="employeeId" className="text-right">
-              الرقم الوظيفي
-            </Label>
-            <Input id="employeeId" value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} className="col-span-3" disabled={isEditMode} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="department" className="text-right">
@@ -153,8 +193,9 @@ export function EmployeeDialog({ children, employee, onSave }: EmployeeDialogPro
             <Label htmlFor="fingerprint" className="text-right">
               البصمة
             </Label>
-            <Button variant="outline" className="col-span-3">
-              {isEditMode ? "إعادة مسح البصمة" : "مسح البصمة"}
+            <Button variant="outline" className="col-span-3" onClick={handleScanFingerprint}>
+              <Fingerprint className="mr-2 h-4 w-4" />
+              {fingerprintScanned ? "تم مسح البصمة" : "مسح البصمة"}
             </Button>
           </div>
         </div>

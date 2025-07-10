@@ -1,3 +1,4 @@
+
 export type JobTitle = {
   id: string;
   name: string;
@@ -10,7 +11,7 @@ export type Shift = {
 };
 
 export type Employee = {
-  id: string;
+  id: string; // This is now the 4-digit unique ID
   name: string;
   department: string;
   jobTitle: string;
@@ -21,7 +22,7 @@ export type Employee = {
 export type AttendanceRecord = {
   id: string;
   employeeName: string;
-  employeeId: string;
+  employeeId: string; // This will still hold the unique ID e.g. "1234"
   timestamp: string;
   status: "حضور" | "انصراف" | "تأخر" | "انصراف مبكر";
   avatar: string;
@@ -41,29 +42,35 @@ export const shifts: Shift[] = [
 ];
 
 export const employees: Employee[] = [
-  { id: "EMP001", name: "أحمد الفارسي", department: "الهندسة", jobTitle: "مهندس برمجيات", shift: "الوردية الصباحية", status: "نشط" },
-  { id: "EMP002", name: "فاطمة الزهراني", department: "الموارد البشرية", jobTitle: "مدير موارد بشرية", shift: "الوردية الصباحية", status: "نشط" },
-  { id: "EMP003", name: "يوسف المنصوري", department: "التسويق", jobTitle: "مسوق رقمي", shift: "الوردية المسائية", status: "في إجازة" },
-  { id: "EMP004", name: "نورة الحمادي", department: "الهندسة", jobTitle: "مهندس برمجيات", shift: "الوردية الصباحية", status: "نشط" },
-  { id: "EMP005", name: "خالد العامري", department: "المالية", jobTitle: "محاسب", shift: "دوام مرن", status: "نشط" },
-  { id: "EMP006", name: "مريم الكعبي", department: "التسويق", jobTitle: "مسوق رقمي", shift: "الوردية المسائية", status: "نشط" },
+  { id: "1001", name: "أحمد الفارسي", department: "الهندسة", jobTitle: "مهندس برمجيات", shift: "الوردية الصباحية", status: "نشط" },
+  { id: "1002", name: "فاطمة الزهراني", department: "الموارد البشرية", jobTitle: "مدير موارد بشرية", shift: "الوردية الصباحية", status: "نشط" },
+  { id: "1003", name: "يوسف المنصوري", department: "التسويق", jobTitle: "مسوق رقمي", shift: "الوردية المسائية", status: "في إجازة" },
+  { id: "1004", name: "نورة الحمادي", department: "الهندسة", jobTitle: "مهندس برمجيات", shift: "الوردية الصباحية", status: "نشط" },
+  { id: "1005", name: "خالد العامري", department: "المالية", jobTitle: "محاسب", shift: "دوام مرن", status: "نشط" },
+  { id: "1006", name: "مريم الكعبي", department: "التسويق", jobTitle: "مسوق رقمي", shift: "الوردية المسائية", status: "نشط" },
 ];
 
 export const attendanceRecords: AttendanceRecord[] = [
-  { id: "REC001", employeeName: "أحمد الفارسي", employeeId: "EMP001", timestamp: "08:05 ص", status: "حضور", avatar: "https://placehold.co/40x40.png?text=AF" },
-  { id: "REC002", employeeName: "فاطمة الزهراني", employeeId: "EMP002", timestamp: "08:15 ص", status: "تأخر", avatar: "https://placehold.co/40x40.png?text=FZ" },
-  { id: "REC003", employeeName: "نورة الحمادي", employeeId: "EMP004", timestamp: "08:30 ص", status: "حضور", avatar: "https://placehold.co/40x40.png?text=NH" },
-  { id: "REC004", employeeName: "خالد العامري", employeeId: "EMP005", timestamp: "05:00 م", status: "انصراف", avatar: "https://placehold.co/40x40.png?text=KA" },
-  { id: "REC005", employeeName: "مريم الكعبي", employeeId: "EMP006", timestamp: "04:45 م", status: "انصراف مبكر", avatar: "https://placehold.co/40x40.png?text=MK" },
-  { id: "REC006", employeeName: "أحمد الفارسي", employeeId: "EMP001", timestamp: "05:02 م", status: "انصراف", avatar: "https://placehold.co/40x40.png?text=AF" },
+  { id: "REC001", employeeName: "أحمد الفارسي", employeeId: "1001", timestamp: "08:05 ص", status: "حضور", avatar: "https://placehold.co/40x40.png?text=AF" },
+  { id: "REC002", employeeName: "فاطمة الزهراني", employeeId: "1002", timestamp: "08:15 ص", status: "تأخر", avatar: "https://placehold.co/40x40.png?text=FZ" },
+  { id: "REC003", employeeName: "نورة الحمادي", employeeId: "1004", timestamp: "08:30 ص", status: "حضور", avatar: "https://placehold.co/40x40.png?text=NH" },
+  { id: "REC004", employeeName: "خالد العامري", employeeId: "1005", timestamp: "05:00 م", status: "انصراف", avatar: "https://placehold.co/40x40.png?text=KA" },
+  { id: "REC005", employeeName: "مريم الكعبي", employeeId: "1006", timestamp: "04:45 م", status: "انصراف مبكر", avatar: "https://placehold.co/40x40.png?text=MK" },
+  { id: "REC006", employeeName: "أحمد الفارسي", employeeId: "1001", timestamp: "05:02 م", status: "انصراف", avatar: "https://placehold.co/40x40.png?text=AF" },
 ];
 
 export const getAttendanceStats = () => {
     const now = new Date();
     const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
-    const present = isWorkHours ? 4 : 0;
-    const late = isWorkHours ? 1 : 0;
-    const absent = employees.filter(e => e.status === 'نشط').length - present - late;
+    if (!isWorkHours) return { present: 0, late: 0, absent: employees.filter(e => e.status === 'نشط').length };
+
+    const presentIds = ["1001", "1004", "1005", "1006"];
+    const lateIds = ["1002"];
+
+    const present = employees.filter(e => e.status === 'نشط' && presentIds.includes(e.id)).length;
+    const late = employees.filter(e => e.status === 'نشط' && lateIds.includes(e.id)).length;
+    const absent = employees.filter(e => e.status === 'نشط' && !presentIds.includes(e.id) && !lateIds.includes(e.id)).length;
+
 
     return { present, late, absent };
 }
@@ -71,18 +78,23 @@ export const getAttendanceStats = () => {
 export const getEmployeesByStatus = (status: 'present' | 'late' | 'absent'): Employee[] => {
     const now = new Date();
     const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
-
-    if (!isWorkHours) return [];
     const activeEmployees = employees.filter(e => e.status === 'نشط');
 
+    if (!isWorkHours) {
+        return status === 'absent' ? activeEmployees : [];
+    }
+
+    const presentIds = ["1001", "1004", "1005", "1006"];
+    const lateIds = ["1002"];
+
     if (status === 'present') {
-        return activeEmployees.filter(e => e.id !== "EMP002");
+        return activeEmployees.filter(e => presentIds.includes(e.id));
     }
     if (status === 'late') {
-        return activeEmployees.filter(e => e.id === "EMP002");
+        return activeEmployees.filter(e => lateIds.includes(e.id));
     }
     if (status === 'absent') {
-         return employees.filter(e => e.status === "في إجازة");
+        return activeEmployees.filter(e => !presentIds.includes(e.id) && !lateIds.includes(e.id));
     }
 
     return [];
