@@ -37,6 +37,7 @@ import {
   LogOut,
   Settings,
 } from "lucide-react";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -91,6 +92,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="w-full flex-1">
             {/* Can be used for search bar */}
           </div>
+          <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-9 w-9 rounded-full">
