@@ -34,6 +34,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { MoreHorizontal, PlusCircle } from "lucide-react"
 import { employees as initialEmployees, type Employee, jobTitles as initialJobTitles, shifts as initialShifts } from "@/lib/data"
