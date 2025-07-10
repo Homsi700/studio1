@@ -39,6 +39,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { getAttendanceRecords } from "@/actions/attendance-actions"
 import type { AttendanceRecord } from "@/lib/data"
+import { Label } from "@/components/ui/label"
 
 
 export default function ReportsPage() {
@@ -56,75 +57,92 @@ export default function ReportsPage() {
         loadData();
     }, []);
 
+    const getStatusBadge = (status: string) => {
+        switch (status) {
+            case "حضور":
+                return <Badge variant="secondary" className="bg-green-100 text-green-800">حضور</Badge>;
+            case "تأخر":
+                return <Badge variant="destructive" className="bg-yellow-100 text-yellow-800 border-yellow-200">تأخر</Badge>;
+            case "انصراف":
+                return <Badge variant="outline">انصراف</Badge>;
+            case "انصراف مبكر":
+                return <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">انصراف مبكر</Badge>;
+            default:
+                return <Badge>{status}</Badge>;
+        }
+    };
+
     return (
         <div className="flex flex-col gap-6">
             <div>
-                <h1 className="text-3xl font-bold">تقارير الحضور</h1>
+                <h1 className="text-3xl font-bold">التقارير</h1>
                 <p className="text-muted-foreground">إنشاء وتصدير تقارير الحضور المفصلة.</p>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>مولد التقارير</CardTitle>
-                    <CardDescription>اختر الفلاتر لإنشاء تقرير.</CardDescription>
+                    <CardTitle>فلاتر التقرير</CardTitle>
+                    <CardDescription>اختر الفلاتر أدناه لتخصيص التقرير.</CardDescription>
                 </CardHeader>
-                <CardContent className="flex flex-col md:flex-row gap-4 items-center">
-                    <div className="grid gap-2 w-full md:w-auto">
-                        <Label>نوع التقرير</Label>
-                        <Select defaultValue="daily">
-                            <SelectTrigger className="w-full md:w-[180px]">
-                                <SelectValue placeholder="اختر النوع" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="daily">ملخص يومي</SelectItem>
-                                <SelectItem value="weekly">تقرير أسبوعي</SelectItem>
-                                <SelectItem value="monthly">تقرير شهري</SelectItem>
-                                <SelectItem value="custom">نطاق مخصص</SelectItem>
-                            </SelectContent>
-                        </Select>
+                <CardContent className="flex flex-col gap-4">
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <div className="grid gap-2 flex-1">
+                            <Label htmlFor="report-type">نوع التقرير</Label>
+                            <Select defaultValue="daily">
+                                <SelectTrigger id="report-type" className="w-full">
+                                    <SelectValue placeholder="اختر النوع" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="daily">ملخص يومي</SelectItem>
+                                    <SelectItem value="weekly">تقرير أسبوعي</SelectItem>
+                                    <SelectItem value="monthly">تقرير شهري</SelectItem>
+                                    <SelectItem value="custom">نطاق مخصص</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="grid gap-2 flex-1">
+                            <Label htmlFor="date-range">النطاق الزمني</Label>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                <Button
+                                    id="date-range"
+                                    variant={"outline"}
+                                    className={cn(
+                                    "w-full justify-start text-right font-normal",
+                                    !date && "text-muted-foreground"
+                                    )}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {date?.from ? (
+                                    date.to ? (
+                                        <>
+                                        {format(date.from, "dd/MM/yyyy")} -{" "}
+                                        {format(date.to, "dd/MM/yyyy")}
+                                        </>
+                                    ) : (
+                                        format(date.from, "dd/MM/yyyy")
+                                    )
+                                    ) : (
+                                    <span>اختر تاريخ</span>
+                                    )}
+                                </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                    initialFocus
+                                    mode="range"
+                                    defaultMonth={date?.from}
+                                    selected={date}
+                                    onSelect={setDate}
+                                    numberOfMonths={2}
+                                />
+                                </PopoverContent>
+                            </Popover>
+                        </div>
                     </div>
-                     <div className="grid gap-2 w-full md:w-auto">
-                        <Label>النطاق الزمني</Label>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                            <Button
-                                id="date"
-                                variant={"outline"}
-                                className={cn(
-                                "w-full md:w-[300px] justify-start text-right font-normal",
-                                !date && "text-muted-foreground"
-                                )}
-                            >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {date?.from ? (
-                                date.to ? (
-                                    <>
-                                    {format(date.from, "LLL dd, y")} -{" "}
-                                    {format(date.to, "LLL dd, y")}
-                                    </>
-                                ) : (
-                                    format(date.from, "LLL dd, y")
-                                )
-                                ) : (
-                                <span>اختر تاريخ</span>
-                                )}
-                            </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                                initialFocus
-                                mode="range"
-                                defaultMonth={date?.from}
-                                selected={date}
-                                onSelect={setDate}
-                                numberOfMonths={2}
-                            />
-                            </PopoverContent>
-                        </Popover>
-                    </div>
-                    <div className="flex gap-2 w-full md:w-auto md:ml-auto pt-5">
-                        <Button className="w-full md:w-auto">إنشاء تقرير</Button>
-                        <Button variant="outline" className="w-full md:w-auto">
+                     <div className="flex justify-end gap-2 pt-4">
+                        <Button>إنشاء تقرير</Button>
+                        <Button variant="outline">
                             <Download className="mr-2 h-4 w-4" />
                             تصدير
                         </Button>
@@ -154,13 +172,11 @@ export default function ReportsPage() {
                         {records.slice(0, 5).map((record) => (
                             <TableRow key={record.id}>
                                 <TableCell className="font-medium">{record.employeeName}</TableCell>
-                                <TableCell>{format(new Date(), "LLL dd, y")}</TableCell>
+                                <TableCell>{format(new Date(), "dd/MM/yyyy")}</TableCell>
                                 <TableCell>{record.status.includes("حضور") || record.status.includes("تأخر") ? record.timestamp : "---"}</TableCell>
                                 <TableCell>{record.status.includes("انصراف") ? record.timestamp : "---"}</TableCell>
                                 <TableCell>
-                                    <Badge variant={record.status.includes("تأخر") || record.status.includes("مبكر") ? "destructive" : "secondary"}>
-                                        {record.status}
-                                    </Badge>
+                                    {getStatusBadge(record.status)}
                                 </TableCell>
                                 <TableCell>50,000</TableCell>
                                 <TableCell>$3.50</TableCell>
@@ -172,8 +188,4 @@ export default function ReportsPage() {
             </Card>
         </div>
     )
-}
-
-function Label({ children }: { children: React.ReactNode }) {
-  return <label className="text-sm font-medium text-muted-foreground">{children}</label>;
 }
