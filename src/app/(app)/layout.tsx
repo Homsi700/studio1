@@ -39,6 +39,8 @@ import {
   Settings,
   Calendar,
   Clock,
+  Banknote,
+  Receipt
 } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 
@@ -68,6 +70,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     { href: "/", label: "لوحة التحكم", icon: LayoutDashboard },
     { href: "/employees", label: "الموظفون", icon: Users },
     { href: "/reports", label: "التقارير", icon: FileText },
+    { href: "/salaries", label: "الرواتب", icon: Banknote },
+    { href: "/expenses", label: "المصاريف", icon: Receipt },
     { href: "/anomalies", label: "كشف التجاوزات (AI)", icon: AlertTriangle },
     { href: "/settings", label: "الإعدادات", icon: Settings },
   ];

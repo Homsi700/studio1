@@ -86,6 +86,15 @@ export default function EmployeesPage() {
     setEmployees(employees.filter(e => e.id !== employeeId));
     setDeleteTarget(null);
   };
+  
+  const formatCurrency = (amount: number, currency: 'USD' | 'SYP') => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    }).format(amount);
+  }
 
   return (
     <AlertDialog>
@@ -116,9 +125,8 @@ export default function EmployeesPage() {
                 <TableRow>
                   <TableHead>الرقم التعريفي</TableHead>
                   <TableHead>الاسم</TableHead>
-                  <TableHead>القسم</TableHead>
                   <TableHead>المسمى الوظيفي</TableHead>
-                  <TableHead>الوردية</TableHead>
+                  <TableHead>الراتب</TableHead>
                   <TableHead>الحالة</TableHead>
                   <TableHead>
                     <span className="sr-only">إجراءات</span>
@@ -130,9 +138,8 @@ export default function EmployeesPage() {
                   <TableRow key={employee.id}>
                     <TableCell className="font-mono text-left">{employee.id}</TableCell>
                     <TableCell className="font-medium">{employee.name}</TableCell>
-                    <TableCell>{employee.department}</TableCell>
                     <TableCell>{employee.jobTitle}</TableCell>
-                    <TableCell>{employee.shift}</TableCell>
+                    <TableCell>{formatCurrency(employee.salary, employee.currency)}</TableCell>
                     <TableCell>
                       <Badge variant={employee.status === "نشط" ? "default" : "secondary"}
                         className={employee.status === "نشط" ? "bg-green-600 text-white" : ""}>

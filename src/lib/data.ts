@@ -17,8 +17,28 @@ export type Employee = {
   department: string;
   jobTitle: string;
   shift: string;
+  salary: number;
+  currency: 'USD' | 'SYP';
   status: "نشط" | "في إجازة";
 };
+
+export type SalaryRecord = {
+    id: string;
+    employeeId: string;
+    amount: number;
+    currency: 'USD' | 'SYP';
+    payDate: string;
+    period: 'monthly' | 'weekly';
+}
+
+export type Expense = {
+    id: string;
+    item: string;
+    category: string;
+    amount: number;
+    currency: 'USD' | 'SYP';
+    date: string;
+}
 
 export type AttendanceRecord = {
   id: string;
@@ -34,4 +54,6 @@ export type DbData = {
     shifts: Shift[];
     employees: Employee[];
     attendanceRecords: AttendanceRecord[];
+    salaryRecords: SalaryRecord[];
+    expenses: Expense[];
 }

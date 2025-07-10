@@ -15,10 +15,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { CheckCircle2 } from "lucide-react"
+import { CheckCircle2, Briefcase, CalendarOff } from "lucide-react"
 import { getAttendanceRecords, getAttendanceStats, getEmployeesByStatus } from "@/actions/attendance-actions"
 import { DashboardDetailCard } from "@/components/dashboard-detail-card"
+import Link from "next/link"
 
 export default async function Dashboard() {
   const stats = await getAttendanceStats();
@@ -45,9 +47,15 @@ export default async function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold">لوحة التحكم</h1>
-        <p className="text-muted-foreground">نظرة عامة على الحضور في الوقت الفعلي</p>
+      <div className="flex items-center justify-between">
+        <div>
+            <h1 className="text-3xl font-bold">لوحة التحكم</h1>
+            <p className="text-muted-foreground">نظرة عامة على الحضور في الوقت الفعلي</p>
+        </div>
+        <div className="flex gap-2">
+            <Button variant="outline"><CalendarOff className="mr-2 h-4 w-4"/> إدارة الإجازات</Button>
+            <Button variant="outline"><Briefcase className="mr-2 h-4 w-4"/> إدارة الورديات</Button>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

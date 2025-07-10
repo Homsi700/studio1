@@ -43,6 +43,8 @@ export function EmployeeDialog({ children, employee, onSave, jobTitles, shifts }
   const [department, setDepartment] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [shift, setShift] = useState("");
+  const [salary, setSalary] = useState<number | "">("");
+  const [currency, setCurrency] = useState<'USD' | 'SYP'>('USD');
   const [fingerprintScanned, setFingerprintScanned] = useState(false);
 
   const resetForm = () => {
@@ -51,6 +53,8 @@ export function EmployeeDialog({ children, employee, onSave, jobTitles, shifts }
     setDepartment(employee?.department || "");
     setJobTitle(employee?.jobTitle || "");
     setShift(employee?.shift || "");
+    setSalary(employee?.salary || "");
+    setCurrency(employee?.currency || 'USD');
     setFingerprintScanned(isEditMode); // Assume fingerprint is already scanned in edit mode
   }
 
@@ -58,6 +62,7 @@ export function EmployeeDialog({ children, employee, onSave, jobTitles, shifts }
     if (isOpen) {
       resetForm();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, employee]);
 
   const handleScanFingerprint = () => {
@@ -78,7 +83,7 @@ export function EmployeeDialog({ children, employee, onSave, jobTitles, shifts }
   }
 
   const handleSubmit = () => {
-    if (!id || !name || !department || !jobTitle || !shift) {
+    if (!id || !name || !department || !jobTitle || !shift || salary === "") {
       toast({
         variant: "destructive",
         title: "خطأ",
@@ -101,6 +106,8 @@ export function EmployeeDialog({ children, employee, onSave, jobTitles, shifts }
       department,
       jobTitle,
       shift,
+      salary: Number(salary),
+      currency,
       status: employee?.status || "نشط",
     });
 
@@ -115,7 +122,7 @@ export function EmployeeDialog({ children, employee, onSave, jobTitles, shifts }
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{isEditMode ? "تعديل موظف" : "إضافة موظف جديد"}</DialogTitle>
           <DialogDescription>
@@ -188,6 +195,23 @@ export function EmployeeDialog({ children, employee, onSave, jobTitles, shifts }
                     ))}
                 </SelectContent>
             </Select>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="salary" className="text-right">
+              الراتب
+            </Label>
+            <div className="col-span-3 flex gap-2">
+                <Input id="salary" type="number" value={salary} onChange={(e) => setSalary(e.target.value === '' ? '' : Number(e.target.value))} placeholder="أدخل الراتب" />
+                <Select value={currency} onValueChange={(value) => setCurrency(value as 'USD' | 'SYP')}>
+                    <SelectTrigger className="w-[100px]">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="USD">$ USD</SelectItem>
+                        <SelectItem value="SYP">ل.س</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="fingerprint" className="text-right">

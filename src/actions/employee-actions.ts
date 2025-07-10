@@ -17,7 +17,9 @@ async function readDb(): Promise<DbData> {
                 jobTitles: [],
                 shifts: [],
                 employees: [],
-                attendanceRecords: []
+                attendanceRecords: [],
+                salaryRecords: [],
+                expenses: []
             };
         }
         throw error;
