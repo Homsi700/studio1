@@ -53,8 +53,16 @@ export default async function Dashboard() {
             <p className="text-muted-foreground">نظرة عامة على الحضور في الوقت الفعلي</p>
         </div>
         <div className="flex gap-2">
-            <Button variant="outline"><CalendarOff className="mr-2 h-4 w-4"/> إدارة الإجازات</Button>
-            <Button variant="outline"><Briefcase className="mr-2 h-4 w-4"/> إدارة الورديات</Button>
+            <Button asChild variant="outline">
+                <Link href="/leaves">
+                    <CalendarOff className="mr-2 h-4 w-4"/> إدارة الإجازات
+                </Link>
+            </Button>
+            <Button asChild variant="outline">
+                <Link href="/shifts">
+                    <Briefcase className="mr-2 h-4 w-4"/> إدارة الورديات
+                </Link>
+            </Button>
         </div>
       </div>
 

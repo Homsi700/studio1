@@ -40,7 +40,9 @@ import {
   Calendar,
   Clock,
   Banknote,
-  Receipt
+  Receipt,
+  CalendarOff,
+  Briefcase
 } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 
@@ -72,6 +74,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     { href: "/reports", label: "التقارير", icon: FileText },
     { href: "/salaries", label: "الرواتب", icon: Banknote },
     { href: "/expenses", label: "المصاريف", icon: Receipt },
+    { href: "/leaves", label: "الإجازات", icon: CalendarOff },
+    { href: "/shifts", label: "الورديات", icon: Briefcase },
     { href: "/anomalies", label: "كشف التجاوزات (AI)", icon: AlertTriangle },
     { href: "/settings", label: "الإعدادات", icon: Settings },
   ];
@@ -89,7 +93,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <SidebarMenu>
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <Link href={item.href}>
+                <Link href={item.href} legacyBehavior passHref>
                   <SidebarMenuButton
                     asChild
                     isActive={pathname === item.href}
