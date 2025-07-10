@@ -59,7 +59,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         second: '2-digit',
         hour12: true
       };
-      setCurrentDateTime(new Intl.DateTimeFormat('ar-SA', options).format(now));
+      setCurrentDateTime(new Intl.DateTimeFormat('ar-SY', options).format(now));
     }, 1000);
     return () => clearInterval(timer);
   }, []);
