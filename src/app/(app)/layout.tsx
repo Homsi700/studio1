@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -36,11 +37,32 @@ import {
   Cloud,
   LogOut,
   Settings,
+  Calendar,
+  Clock,
 } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [currentDateTime, setCurrentDateTime] = useState('');
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const options: Intl.DateTimeFormatOptions = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      };
+      setCurrentDateTime(new Intl.DateTimeFormat('ar-SA', options).format(now));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const menuItems = [
     { href: "/", label: "لوحة التحكم", icon: LayoutDashboard },
@@ -84,7 +106,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6 sticky top-0 z-30">
           <SidebarTrigger className="md:hidden" />
           <div className="w-full flex-1">
-            {/* Can be used for search bar */}
+             <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                {currentDateTime ? (
+                  <>
+                    <Calendar className="h-4 w-4" />
+                    <span>{currentDateTime}</span>
+                  </>
+                ) : (
+                  <div className="h-5 w-64 bg-muted animate-pulse rounded-md" />
+                )}
+              </div>
           </div>
           <ModeToggle />
           <DropdownMenu>
