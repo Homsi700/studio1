@@ -1,4 +1,5 @@
 
+
 import {
   Card,
   CardContent,
@@ -21,9 +22,12 @@ import { CheckCircle2, Briefcase, CalendarOff } from "lucide-react"
 import { getAttendanceRecords, getAttendanceStats, getEmployeesByStatus } from "@/actions/attendance-actions"
 import { DashboardDetailCard } from "@/components/dashboard-detail-card"
 import Link from "next/link"
+import { LeaveRequestDialog } from "@/components/leave-request-dialog"
+import { getEmployees } from "@/actions/employee-actions"
 
 export default async function Dashboard() {
   const stats = await getAttendanceStats();
+  const allEmployees = await getEmployees();
   const presentEmployees = await getEmployeesByStatus("present");
   const lateEmployees = await getEmployeesByStatus("late");
   const absentEmployees = await getEmployeesByStatus("absent");
@@ -53,11 +57,11 @@ export default async function Dashboard() {
             <p className="text-muted-foreground">نظرة عامة على الحضور في الوقت الفعلي</p>
         </div>
         <div className="flex gap-2">
-            <Button asChild variant="outline">
-                <Link href="/leaves">
-                    <CalendarOff className="mr-2 h-4 w-4"/> إدارة الإجازات
-                </Link>
-            </Button>
+            <LeaveRequestDialog employees={allEmployees.filter(e => e.status === 'نشط')}>
+              <Button variant="outline">
+                  <CalendarOff className="mr-2 h-4 w-4"/> طلب إجازة
+              </Button>
+            </LeaveRequestDialog>
             <Button asChild variant="outline">
                 <Link href="/shifts">
                     <Briefcase className="mr-2 h-4 w-4"/> إدارة الورديات

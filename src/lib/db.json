@@ -137,5 +137,25 @@
     }
   ],
   "salaryRecords": [],
-  "expenses": []
+  "expenses": [],
+  "leaves": [
+    {
+      "id": "leave-1672522500000",
+      "employeeId": "1002",
+      "leaveType": "مرضية",
+      "startDate": "2024-07-20",
+      "endDate": "2024-07-22",
+      "reason": "وعكة صحية طارئة",
+      "status": "قيد المراجعة"
+    },
+    {
+      "id": "leave-1672608900000",
+      "employeeId": "1005",
+      "leaveType": "سنوية",
+      "startDate": "2024-08-01",
+      "endDate": "2024-08-10",
+      "reason": "إجازة الصيف السنوية",
+      "status": "موافق عليه"
+    }
+  ]
 }

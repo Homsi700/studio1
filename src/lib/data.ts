@@ -1,5 +1,4 @@
 
-
 export type JobTitle = {
   id: string;
   name: string;
@@ -40,6 +39,16 @@ export type Expense = {
     date: string;
 }
 
+export type Leave = {
+    id: string;
+    employeeId: string;
+    leaveType: string;
+    startDate: string;
+    endDate: string;
+    reason: string;
+    status: 'قيد المراجعة' | 'موافق عليه' | 'مرفوض';
+}
+
 export type AttendanceRecord = {
   id: string;
   employeeName: string;
@@ -56,4 +65,5 @@ export type DbData = {
     attendanceRecords: AttendanceRecord[];
     salaryRecords: SalaryRecord[];
     expenses: Expense[];
+    leaves: Leave[];
 }
