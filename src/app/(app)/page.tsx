@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -16,14 +17,16 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { CheckCircle2 } from "lucide-react"
-import { attendanceRecords, getAttendanceStats, getEmployeesByStatus } from "@/lib/data"
+import { getAttendanceRecords, getAttendanceStats, getEmployeesByStatus } from "@/lib/data"
 import { DashboardDetailCard } from "@/components/dashboard-detail-card"
 
-export default function Dashboard() {
-  const stats = getAttendanceStats();
-  const presentEmployees = getEmployeesByStatus("present");
-  const lateEmployees = getEmployeesByStatus("late");
-  const absentEmployees = getEmployeesByStatus("absent");
+export default async function Dashboard() {
+  const stats = await getAttendanceStats();
+  const presentEmployees = await getEmployeesByStatus("present");
+  const lateEmployees = await getEmployeesByStatus("late");
+  const absentEmployees = await getEmployeesByStatus("absent");
+  const attendanceRecords = await getAttendanceRecords();
+
 
   const getStatusBadge = (status: string) => {
     switch (status) {

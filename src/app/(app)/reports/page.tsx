@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -36,7 +37,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { attendanceRecords } from "@/lib/data"
+import { getAttendanceRecords, type AttendanceRecord } from "@/lib/data"
 
 
 export default function ReportsPage() {
@@ -44,6 +45,15 @@ export default function ReportsPage() {
         from: new Date(),
         to: addDays(new Date(), 7),
     })
+    const [records, setRecords] = React.useState<AttendanceRecord[]>([]);
+
+    React.useEffect(() => {
+        async function loadData() {
+            const initialRecords = await getAttendanceRecords();
+            setRecords(initialRecords);
+        }
+        loadData();
+    }, []);
 
     return (
         <div className="flex flex-col gap-6">
@@ -140,7 +150,7 @@ export default function ReportsPage() {
                         </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {attendanceRecords.slice(0, 5).map((record) => (
+                        {records.slice(0, 5).map((record) => (
                             <TableRow key={record.id}>
                                 <TableCell className="font-medium">{record.employeeName}</TableCell>
                                 <TableCell>{format(new Date(), "LLL dd, y")}</TableCell>

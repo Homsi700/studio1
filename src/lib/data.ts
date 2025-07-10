@@ -1,4 +1,7 @@
 
+import fs from "fs/promises";
+import path from "path";
+
 export type JobTitle = {
   id: string;
   name: string;
@@ -28,42 +31,145 @@ export type AttendanceRecord = {
   avatar: string;
 };
 
-export const jobTitles: JobTitle[] = [
-  { id: "jt-1", name: "مهندس برمجيات" },
-  { id: "jt-2", name: "مدير موارد بشرية" },
-  { id: "jt-3", name: "مسوق رقمي" },
-  { id: "jt-4", name: "محاسب" },
-];
+type DbData = {
+    jobTitles: JobTitle[];
+    shifts: Shift[];
+    employees: Employee[];
+    attendanceRecords: AttendanceRecord[];
+}
 
-export const shifts: Shift[] = [
-  { id: "sh-1", name: "الوردية الصباحية", time: "8ص - 4م" },
-  { id: "sh-2", name: "الوردية المسائية", time: "4م - 12ص" },
-  { id: "sh-3", name: "دوام مرن", time: "غير محدد" },
-];
+const dbPath = path.join(process.cwd(), 'src', 'lib', 'db.json');
 
-export const employees: Employee[] = [
-  { id: "1001", name: "أحمد الفارسي", department: "الهندسة", jobTitle: "مهندس برمجيات", shift: "الوردية الصباحية", status: "نشط" },
-  { id: "1002", name: "فاطمة الزهراني", department: "الموارد البشرية", jobTitle: "مدير موارد بشرية", shift: "الوردية الصباحية", status: "نشط" },
-  { id: "1003", name: "يوسف المنصوري", department: "التسويق", jobTitle: "مسوق رقمي", shift: "الوردية المسائية", status: "في إجازة" },
-  { id: "1004", name: "نورة الحمادي", department: "الهندسة", jobTitle: "مهندس برمجيات", shift: "الوردية الصباحية", status: "نشط" },
-  { id: "1005", name: "خالد العامري", department: "المالية", jobTitle: "محاسب", shift: "دوام مرن", status: "نشط" },
-  { id: "1006", name: "مريم الكعبي", department: "التسويق", jobTitle: "مسوق رقمي", shift: "الوردية المسائية", status: "نشط" },
-];
+async function readDb(): Promise<DbData> {
+    try {
+        const data = await fs.readFile(dbPath, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        // If file doesn't exist, return initial empty structure
+        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+            return {
+                jobTitles: [],
+                shifts: [],
+                employees: [],
+                attendanceRecords: []
+            };
+        }
+        throw error;
+    }
+}
 
-export const attendanceRecords: AttendanceRecord[] = [
-  { id: "REC001", employeeName: "أحمد الفارسي", employeeId: "1001", timestamp: "08:05 ص", status: "حضور", avatar: "https://placehold.co/40x40.png?text=AF" },
-  { id: "REC002", employeeName: "فاطمة الزهراني", employeeId: "1002", timestamp: "08:15 ص", status: "تأخر", avatar: "https://placehold.co/40x40.png?text=FZ" },
-  { id: "REC003", employeeName: "نورة الحمادي", employeeId: "1004", timestamp: "08:30 ص", status: "حضور", avatar: "https://placehold.co/40x40.png?text=NH" },
-  { id: "REC004", employeeName: "خالد العامري", employeeId: "1005", timestamp: "05:00 م", status: "انصراف", avatar: "https://placehold.co/40x40.png?text=KA" },
-  { id: "REC005", employeeName: "مريم الكعبي", employeeId: "1006", timestamp: "04:45 م", status: "انصراف مبكر", avatar: "https://placehold.co/40x40.png?text=MK" },
-  { id: "REC006", employeeName: "أحمد الفارسي", employeeId: "1001", timestamp: "05:02 م", status: "انصراف", avatar: "https://placehold.co/40x40.png?text=AF" },
-];
+async function writeDb(data: DbData): Promise<void> {
+    await fs.writeFile(dbPath, JSON.stringify(data, null, 2), 'utf-8');
+}
 
-export const getAttendanceStats = () => {
+
+// Functions to interact with the data
+export async function getJobTitles(): Promise<JobTitle[]> {
+    const db = await readDb();
+    return db.jobTitles;
+}
+
+export async function addJobTitle(name: string): Promise<JobTitle> {
+    const db = await readDb();
+    const newJobTitle: JobTitle = { id: `jt-${Date.now()}`, name };
+    db.jobTitles.push(newJobTitle);
+    await writeDb(db);
+    return newJobTitle;
+}
+
+export async function updateJobTitle(id: string, name: string): Promise<JobTitle | undefined> {
+    const db = await readDb();
+    const jobTitle = db.jobTitles.find(jt => jt.id === id);
+    if (jobTitle) {
+        jobTitle.name = name;
+        await writeDb(db);
+        return jobTitle;
+    }
+    return undefined;
+}
+
+export async function deleteJobTitle(id: string): Promise<void> {
+    const db = await readDb();
+    db.jobTitles = db.jobTitles.filter(jt => jt.id !== id);
+    await writeDb(db);
+}
+
+export async function getShifts(): Promise<Shift[]> {
+    const db = await readDb();
+    return db.shifts;
+}
+
+export async function addShift(name: string, time: string): Promise<Shift> {
+    const db = await readDb();
+    const newShift: Shift = { id: `sh-${Date.now()}`, name, time };
+    db.shifts.push(newShift);
+    await writeDb(db);
+    return newShift;
+}
+
+export async function updateShift(id: string, name: string, time: string): Promise<Shift | undefined> {
+    const db = await readDb();
+    const shift = db.shifts.find(s => s.id === id);
+    if (shift) {
+        shift.name = name;
+        shift.time = time;
+        await writeDb(db);
+        return shift;
+    }
+    return undefined;
+}
+
+export async function deleteShift(id: string): Promise<void> {
+    const db = await readDb();
+    db.shifts = db.shifts.filter(s => s.id !== id);
+    await writeDb(db);
+}
+
+export async function getEmployees(): Promise<Employee[]> {
+    const db = await readDb();
+    return db.employees;
+}
+
+export async function addEmployee(employeeData: Omit<Employee, 'status'>): Promise<Employee> {
+    const db = await readDb();
+    const newEmployee: Employee = { ...employeeData, status: "نشط" };
+    db.employees.push(newEmployee);
+    await writeDb(db);
+    return newEmployee;
+}
+
+export async function updateEmployee(employeeData: Employee): Promise<Employee | undefined> {
+    const db = await readDb();
+    const index = db.employees.findIndex(e => e.id === employeeData.id);
+    if (index !== -1) {
+        db.employees[index] = employeeData;
+        await writeDb(db);
+        return employeeData;
+    }
+    return undefined;
+}
+
+export async function deleteEmployee(id: string): Promise<void> {
+    const db = await readDb();
+    db.employees = db.employees.filter(e => e.id !== id);
+    await writeDb(db);
+}
+
+
+export async function getAttendanceRecords(): Promise<AttendanceRecord[]> {
+    const db = await readDb();
+    return db.attendanceRecords;
+}
+
+export async function getAttendanceStats() {
+    const db = await readDb();
+    const { employees } = db;
+
     const now = new Date();
     const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
     if (!isWorkHours) return { present: 0, late: 0, absent: employees.filter(e => e.status === 'نشط').length };
 
+    // This is mock logic, in a real app this would be based on real attendance data
     const presentIds = ["1001", "1004", "1005", "1006"];
     const lateIds = ["1002"];
 
@@ -75,7 +181,10 @@ export const getAttendanceStats = () => {
     return { present, late, absent };
 }
 
-export const getEmployeesByStatus = (status: 'present' | 'late' | 'absent'): Employee[] => {
+export async function getEmployeesByStatus(status: 'present' | 'late' | 'absent'): Promise<Employee[]> {
+    const db = await readDb();
+    const { employees } = db;
+    
     const now = new Date();
     const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
     const activeEmployees = employees.filter(e => e.status === 'نشط');
@@ -84,6 +193,7 @@ export const getEmployeesByStatus = (status: 'present' | 'late' | 'absent'): Emp
         return status === 'absent' ? activeEmployees : [];
     }
 
+    // This is mock logic, in a real app this would be based on real attendance data
     const presentIds = ["1001", "1004", "1005", "1006"];
     const lateIds = ["1002"];
 

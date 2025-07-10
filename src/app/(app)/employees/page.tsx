@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import * as React from "react";
@@ -37,28 +38,50 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { MoreHorizontal, PlusCircle } from "lucide-react"
-import { employees as initialEmployees, type Employee, jobTitles as initialJobTitles, shifts as initialShifts } from "@/lib/data"
+import {
+    getEmployees,
+    getJobTitles,
+    getShifts,
+    addEmployee,
+    updateEmployee,
+    deleteEmployee,
+    type Employee, type JobTitle, type Shift
+} from "@/lib/data"
 import { EmployeeDialog } from "@/components/employee-dialog"
 
 export default function EmployeesPage() {
-  const [employees, setEmployees] = React.useState<Employee[]>(initialEmployees);
+  const [employees, setEmployees] = React.useState<Employee[]>([]);
+  const [jobTitles, setJobTitles] = React.useState<JobTitle[]>([]);
+  const [shifts, setShifts] = React.useState<Shift[]>([]);
   const [deleteTarget, setDeleteTarget] = React.useState<Employee | null>(null);
 
-  // In a real app, this data would be fetched or managed globally
-  const [jobTitles, setJobTitles] = React.useState(initialJobTitles);
-  const [shifts, setShifts] = React.useState(initialShifts);
+  React.useEffect(() => {
+    async function loadData() {
+        const [emps, jts, shs] = await Promise.all([
+            getEmployees(),
+            getJobTitles(),
+            getShifts()
+        ]);
+        setEmployees(emps);
+        setJobTitles(jts);
+        setShifts(shs);
+    }
+    loadData();
+  }, [])
 
-
-  const handleSaveEmployee = (employeeData: Employee) => {
+  const handleSaveEmployee = async (employeeData: Employee) => {
     const isEditing = employees.some(e => e.id === employeeData.id);
     if (isEditing) {
-      setEmployees(employees.map(e => e.id === employeeData.id ? employeeData : e));
+      await updateEmployee(employeeData);
     } else {
-      setEmployees([...employees, employeeData]);
+      await addEmployee(employeeData);
     }
+    const updatedEmployees = await getEmployees();
+    setEmployees(updatedEmployees);
   };
 
-  const handleDeleteEmployee = (employeeId: string) => {
+  const handleDeleteEmployee = async (employeeId: string) => {
+    await deleteEmployee(employeeId);
     setEmployees(employees.filter(e => e.id !== employeeId));
     setDeleteTarget(null);
   };

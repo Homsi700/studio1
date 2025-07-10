@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import * as React from "react";
@@ -13,8 +14,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { PlusCircle, Trash2, Edit, Save } from "lucide-react";
 import {
-  jobTitles as initialJobTitles,
-  shifts as initialShifts,
+  getJobTitles,
+  getShifts,
+  addJobTitle,
+  updateJobTitle,
+  deleteJobTitle,
+  addShift,
+  updateShift,
+  deleteShift,
   type JobTitle,
   type Shift,
 } from "@/lib/data";
@@ -22,8 +29,8 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function SettingsPage() {
   const { toast } = useToast();
-  const [jobTitles, setJobTitles] = React.useState<JobTitle[]>(initialJobTitles);
-  const [shifts, setShifts] = React.useState<Shift[]>(initialShifts);
+  const [jobTitles, setJobTitles] = React.useState<JobTitle[]>([]);
+  const [shifts, setShifts] = React.useState<Shift[]>([]);
   const [newJobTitle, setNewJobTitle] = React.useState("");
   const [newShiftName, setNewShiftName] = React.useState("");
   const [newShiftTime, setNewShiftTime] = React.useState("");
@@ -33,20 +40,34 @@ export default function SettingsPage() {
   const [editingShiftName, setEditingShiftName] = React.useState("");
   const [editingShiftTime, setEditingShiftTime] = React.useState("");
 
+  React.useEffect(() => {
+      async function loadData() {
+          const [jts, shs] = await Promise.all([getJobTitles(), getShifts()]);
+          setJobTitles(jts);
+          setShifts(shs);
+      }
+      loadData();
+  }, []);
+
+  const refreshData = async () => {
+      const [jts, shs] = await Promise.all([getJobTitles(), getShifts()]);
+      setJobTitles(jts);
+      setShifts(shs);
+  };
+
   // Job Title Handlers
-  const handleAddJobTitle = () => {
+  const handleAddJobTitle = async () => {
     if (newJobTitle.trim()) {
-      setJobTitles([
-        ...jobTitles,
-        { id: `jt-${Date.now()}`, name: newJobTitle.trim() },
-      ]);
+      await addJobTitle(newJobTitle.trim());
       setNewJobTitle("");
+      await refreshData();
       toast({ title: "نجاح", description: "تمت إضافة المسمى الوظيفي بنجاح." });
     }
   };
 
-  const handleDeleteJobTitle = (id: string) => {
-    setJobTitles(jobTitles.filter((jt) => jt.id !== id));
+  const handleDeleteJobTitle = async (id: string) => {
+    await deleteJobTitle(id);
+    await refreshData();
     toast({ title: "نجاح", description: "تم حذف المسمى الوظيفي." });
   };
 
@@ -55,36 +76,28 @@ export default function SettingsPage() {
     setEditingJobTitleValue(jobTitle.name);
   };
   
-  const handleSaveJobTitle = (id: string) => {
-    setJobTitles(
-      jobTitles.map((jt) =>
-        jt.id === id ? { ...jt, name: editingJobTitleValue } : jt
-      )
-    );
+  const handleSaveJobTitle = async (id: string) => {
+    await updateJobTitle(id, editingJobTitleValue);
     setEditingJobTitleId(null);
+    await refreshData();
     toast({ title: "نجاح", description: "تم تحديث المسمى الوظيفي." });
   };
 
 
   // Shift Handlers
-  const handleAddShift = () => {
+  const handleAddShift = async () => {
     if (newShiftName.trim() && newShiftTime.trim()) {
-      setShifts([
-        ...shifts,
-        {
-          id: `sh-${Date.now()}`,
-          name: newShiftName.trim(),
-          time: newShiftTime.trim(),
-        },
-      ]);
+      await addShift(newShiftName.trim(), newShiftTime.trim());
       setNewShiftName("");
       setNewShiftTime("");
+      await refreshData();
        toast({ title: "نجاح", description: "تمت إضافة الوردية بنجاح." });
     }
   };
 
-  const handleDeleteShift = (id: string) => {
-    setShifts(shifts.filter((sh) => sh.id !== id));
+  const handleDeleteShift = async (id: string) => {
+    await deleteShift(id);
+    await refreshData();
     toast({ title: "نجاح", description: "تم حذف الوردية." });
   };
 
@@ -94,13 +107,10 @@ export default function SettingsPage() {
     setEditingShiftTime(shift.time);
   };
 
-  const handleSaveShift = (id: string) => {
-      setShifts(
-          shifts.map((s) =>
-              s.id === id ? { ...s, name: editingShiftName, time: editingShiftTime } : s
-          )
-      );
+  const handleSaveShift = async (id: string) => {
+      await updateShift(id, editingShiftName, editingShiftTime);
       setEditingShiftId(null);
+      await refreshData();
       toast({ title: "نجاح", description: "تم تحديث الوردية." });
   };
 
