@@ -42,19 +42,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const menuItems = [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/employees", label: "Employees", icon: Users },
-    { href: "/reports", label: "Reports", icon: FileText },
-    { href: "/anomalies", label: "AI Anomaly Detection", icon: AlertTriangle },
+    { href: "/", label: "لوحة التحكم", icon: LayoutDashboard },
+    { href: "/employees", label: "الموظفون", icon: Users },
+    { href: "/reports", label: "التقارير", icon: FileText },
+    { href: "/anomalies", label: "كشف التجاوزات (AI)", icon: AlertTriangle },
   ];
 
   return (
     <div className="flex min-h-screen w-full">
-      <Sidebar collapsible="icon" className="border-r">
+      <Sidebar collapsible="icon" className="border-l">
         <SidebarHeader>
           <div className="flex items-center gap-2 p-2">
             <Fingerprint className="w-8 h-8 text-primary" />
-            <h1 className="text-xl font-semibold text-primary">DoamTrack</h1>
+            <h1 className="text-xl font-semibold text-primary">دوام تراك</h1>
           </div>
         </SidebarHeader>
         <SidebarContent className="p-2">
@@ -77,9 +77,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarFooter>
            <SidebarMenu>
               <SidebarMenuItem>
-                 <SidebarMenuButton tooltip={{ children: "Settings" }}>
+                 <SidebarMenuButton tooltip={{ children: "الإعدادات" }}>
                     <Settings/>
-                    <span>Settings</span>
+                    <span>الإعدادات</span>
                  </SidebarMenuButton>
               </SidebarMenuItem>
            </SidebarMenu>
@@ -96,14 +96,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <Button variant="ghost" className="relative h-9 w-9 rounded-full">
                 <Avatar className="h-9 w-9">
                   <AvatarImage src="https://placehold.co/40x40.png" alt="@admin" data-ai-hint="profile picture" />
-                  <AvatarFallback>AD</AvatarFallback>
+                  <AvatarFallback>مدير</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
+              <DropdownMenuLabel className="font-normal text-right">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">Admin</p>
+                  <p className="text-sm font-medium leading-none">المدير</p>
                   <p className="text-xs leading-none text-muted-foreground">
                     admin@doamtrack.com
                   </p>
@@ -111,17 +111,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
                <DropdownMenuItem>
-                <Cloud className="mr-2 h-4 w-4" />
-                <span>Backup Data</span>
+                <Cloud className="ml-2 h-4 w-4" />
+                <span>نسخ احتياطي للبيانات</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <LifeBuoy className="mr-2 h-4 w-4" />
-                <span>Support</span>
+                <LifeBuoy className="ml-2 h-4 w-4" />
+                <span>الدعم الفني</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+                <LogOut className="ml-2 h-4 w-4" />
+                <span>تسجيل الخروج</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

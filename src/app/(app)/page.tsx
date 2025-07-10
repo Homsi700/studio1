@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Users, Clock, UserX, CheckCircle2, XCircle } from "lucide-react"
+import { Users, Clock, UserX, CheckCircle2 } from "lucide-react"
 import { attendanceRecords, getAttendanceStats } from "@/lib/data"
 
 export default function Dashboard() {
@@ -23,14 +23,14 @@ export default function Dashboard() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "Clocked In":
-        return <Badge variant="secondary" className="bg-green-100 text-green-800">Clocked In</Badge>;
-      case "Late In":
-        return <Badge variant="destructive" className="bg-yellow-100 text-yellow-800 border-yellow-200">Late In</Badge>;
-      case "Clocked Out":
-        return <Badge variant="outline">Clocked Out</Badge>;
-      case "Early Out":
-        return <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">Early Out</Badge>;
+      case "حضور":
+        return <Badge variant="secondary" className="bg-green-100 text-green-800">حضور</Badge>;
+      case "تأخر":
+        return <Badge variant="destructive" className="bg-yellow-100 text-yellow-800 border-yellow-200">تأخر</Badge>;
+      case "انصراف":
+        return <Badge variant="outline">انصراف</Badge>;
+      case "انصراف مبكر":
+        return <Badge variant="destructive" className="bg-red-100 text-red-800 border-red-200">انصراف مبكر</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -39,58 +39,58 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">Real-time attendance overview</p>
+        <h1 className="text-3xl font-bold">لوحة التحكم</h1>
+        <p className="text-muted-foreground">نظرة عامة على الحضور في الوقت الفعلي</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Present Employees
+              الموظفون الحاضرون
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.present}</div>
             <p className="text-xs text-muted-foreground">
-              Currently in office
+              المتواجدون حالياً
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Late Arrivals</CardTitle>
+            <CardTitle className="text-sm font-medium">الوصول المتأخر</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-yellow-600">{stats.late}</div>
-            <p className="text-xs text-muted-foreground">Today's late entries</p>
+            <p className="text-xs text-muted-foreground">حالات التأخر اليوم</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Absent Today</CardTitle>
+            <CardTitle className="text-sm font-medium">الغائبون اليوم</CardTitle>
             <UserX className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-destructive">{stats.absent}</div>
             <p className="text-xs text-muted-foreground">
-              Employees not present
+              الموظفون غير المتواجدين
             </p>
           </CardContent>
         </Card>
          <Card className="bg-primary text-primary-foreground">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Biometric Device
+              جهاز البصمة
             </CardTitle>
             <CheckCircle2 className="h-4 w-4 text-primary-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">Connected</div>
+            <div className="text-2xl font-bold">متصل</div>
             <p className="text-xs text-primary-foreground/80">
-              Real-time sync enabled
+              المزامنة الفورية مفعلة
             </p>
           </CardContent>
         </Card>
@@ -98,18 +98,18 @@ export default function Dashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
+          <CardTitle>آخر الحركات</CardTitle>
           <CardDescription>
-            Latest clock-ins and clock-outs from the system.
+            أحدث عمليات تسجيل الحضور والانصراف في النظام.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Employee</TableHead>
-                <TableHead>Time</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>الموظف</TableHead>
+                <TableHead>الوقت</TableHead>
+                <TableHead>الحالة</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

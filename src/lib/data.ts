@@ -2,7 +2,7 @@ export type Employee = {
   id: string;
   name: string;
   department: string;
-  status: "Active" | "On Leave";
+  status: "نشط" | "في إجازة";
 };
 
 export type AttendanceRecord = {
@@ -10,32 +10,32 @@ export type AttendanceRecord = {
   employeeName: string;
   employeeId: string;
   timestamp: string;
-  status: "Clocked In" | "Clocked Out" | "Late In" | "Early Out";
+  status: "حضور" | "انصراف" | "تأخر" | "انصراف مبكر";
   avatar: string;
 };
 
 export const employees: Employee[] = [
-  { id: "EMP001", name: "Ahmad Al-Farsi", department: "Engineering", status: "Active" },
-  { id: "EMP002", name: "Fatima Al-Zahrani", department: "Human Resources", status: "Active" },
-  { id: "EMP003", name: "Yusuf Al-Mansoori", department: "Marketing", status: "On Leave" },
-  { id: "EMP004", name: "Noora Al-Hammadi", department: "Engineering", status: "Active" },
-  { id: "EMP005", name: "Khalid Al-Ameri", department: "Finance", status: "Active" },
-  { id: "EMP006", name: "Mariam Al-Kaabi", department: "Marketing", status: "Active" },
+  { id: "EMP001", name: "أحمد الفارسي", department: "الهندسة", status: "نشط" },
+  { id: "EMP002", name: "فاطمة الزهراني", department: "الموارد البشرية", status: "نشط" },
+  { id: "EMP003", name: "يوسف المنصوري", department: "التسويق", status: "في إجازة" },
+  { id: "EMP004", name: "نورة الحمادي", department: "الهندسة", status: "نشط" },
+  { id: "EMP005", name: "خالد العامري", department: "المالية", status: "نشط" },
+  { id: "EMP006", name: "مريم الكعبي", department: "التسويق", status: "نشط" },
 ];
 
 export const attendanceRecords: AttendanceRecord[] = [
-  { id: "REC001", employeeName: "Ahmad Al-Farsi", employeeId: "EMP001", timestamp: "08:05 AM", status: "Clocked In", avatar: "https://placehold.co/40x40.png?text=AA" },
-  { id: "REC002", employeeName: "Fatima Al-Zahrani", employeeId: "EMP002", timestamp: "08:15 AM", status: "Late In", avatar: "https://placehold.co/40x40.png?text=FZ" },
-  { id: "REC003", employeeName: "Noora Al-Hammadi", employeeId: "EMP004", timestamp: "08:30 AM", status: "Clocked In", avatar: "https://placehold.co/40x40.png?text=NH" },
-  { id: "REC004", employeeName: "Khalid Al-Ameri", employeeId: "EMP005", timestamp: "05:00 PM", status: "Clocked Out", avatar: "https://placehold.co/40x40.png?text=KA" },
-  { id: "REC005", employeeName: "Mariam Al-Kaabi", employeeId: "EMP006", timestamp: "04:45 PM", status: "Early Out", avatar: "https://placehold.co/40x40.png?text=MK" },
-  { id: "REC006", employeeName: "Ahmad Al-Farsi", employeeId: "EMP001", timestamp: "05:02 PM", status: "Clocked Out", avatar: "https://placehold.co/40x40.png?text=AA" },
+  { id: "REC001", employeeName: "أحمد الفارسي", employeeId: "EMP001", timestamp: "08:05 ص", status: "حضور", avatar: "https://placehold.co/40x40.png?text=AF" },
+  { id: "REC002", employeeName: "فاطمة الزهراني", employeeId: "EMP002", timestamp: "08:15 ص", status: "تأخر", avatar: "https://placehold.co/40x40.png?text=FZ" },
+  { id: "REC003", employeeName: "نورة الحمادي", employeeId: "EMP004", timestamp: "08:30 ص", status: "حضور", avatar: "https://placehold.co/40x40.png?text=NH" },
+  { id: "REC004", employeeName: "خالد العامري", employeeId: "EMP005", timestamp: "05:00 م", status: "انصراف", avatar: "https://placehold.co/40x40.png?text=KA" },
+  { id: "REC005", employeeName: "مريم الكعبي", employeeId: "EMP006", timestamp: "04:45 م", status: "انصراف مبكر", avatar: "https://placehold.co/40x40.png?text=MK" },
+  { id: "REC006", employeeName: "أحمد الفارسي", employeeId: "EMP001", timestamp: "05:02 م", status: "انصراف", avatar: "https://placehold.co/40x40.png?text=AF" },
 ];
 
 export const getAttendanceStats = () => {
     const now = new Date();
     const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
-    const present = isWorkHours ? employees.filter(e => e.status === 'Active').length - 2 : 0;
+    const present = isWorkHours ? employees.filter(e => e.status === 'نشط').length - 2 : 0;
     const late = isWorkHours ? 1 : 0;
     const absent = employees.length - present - late;
 

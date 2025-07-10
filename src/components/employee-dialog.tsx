@@ -35,51 +35,51 @@ export function EmployeeDialog({ children, employee }: EmployeeDialogProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{isEditMode ? "Edit Employee" : "Add New Employee"}</DialogTitle>
+          <DialogTitle>{isEditMode ? "تعديل موظف" : "إضافة موظف جديد"}</DialogTitle>
           <DialogDescription>
-            {isEditMode ? "Update the details of the employee." : "Enter the details for the new employee."}
+            {isEditMode ? "تحديث تفاصيل الموظف." : "أدخل تفاصيل الموظف الجديد."}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Name
+              الاسم
             </Label>
             <Input id="name" defaultValue={employee?.name} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="employeeId" className="text-right">
-              Employee ID
+              الرقم الوظيفي
             </Label>
             <Input id="employeeId" defaultValue={employee?.id} className="col-span-3" disabled={isEditMode} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="department" className="text-right">
-              Department
+              القسم
             </Label>
             <Select defaultValue={employee?.department}>
                 <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Select a department" />
+                    <SelectValue placeholder="اختر قسماً" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="Engineering">Engineering</SelectItem>
-                    <SelectItem value="Human Resources">Human Resources</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="Finance">Finance</SelectItem>
+                    <SelectItem value="الهندسة">الهندسة</SelectItem>
+                    <SelectItem value="الموارد البشرية">الموارد البشرية</SelectItem>
+                    <SelectItem value="التسويق">التسويق</SelectItem>
+                    <SelectItem value="المالية">المالية</SelectItem>
                 </SelectContent>
             </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="fingerprint" className="text-right">
-              Fingerprint
+              البصمة
             </Label>
             <Button variant="outline" className="col-span-3">
-              {isEditMode ? "Re-scan Fingerprint" : "Scan Fingerprint"}
+              {isEditMode ? "إعادة مسح البصمة" : "مسح البصمة"}
             </Button>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit">حفظ التغييرات</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

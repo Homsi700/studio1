@@ -48,32 +48,32 @@ export default function ReportsPage() {
     return (
         <div className="flex flex-col gap-6">
             <div>
-                <h1 className="text-3xl font-bold">Attendance Reports</h1>
-                <p className="text-muted-foreground">Generate and export detailed attendance reports.</p>
+                <h1 className="text-3xl font-bold">تقارير الحضور</h1>
+                <p className="text-muted-foreground">إنشاء وتصدير تقارير الحضور المفصلة.</p>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Report Generator</CardTitle>
-                    <CardDescription>Select filters to generate a report.</CardDescription>
+                    <CardTitle>مولد التقارير</CardTitle>
+                    <CardDescription>اختر الفلاتر لإنشاء تقرير.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col md:flex-row gap-4 items-center">
                     <div className="grid gap-2 w-full md:w-auto">
-                        <Label>Report Type</Label>
+                        <Label>نوع التقرير</Label>
                         <Select defaultValue="daily">
                             <SelectTrigger className="w-full md:w-[180px]">
-                                <SelectValue placeholder="Select type" />
+                                <SelectValue placeholder="اختر النوع" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="daily">Daily Summary</SelectItem>
-                                <SelectItem value="weekly">Weekly Report</SelectItem>
-                                <SelectItem value="monthly">Monthly Report</SelectItem>
-                                <SelectItem value="custom">Custom Range</SelectItem>
+                                <SelectItem value="daily">ملخص يومي</SelectItem>
+                                <SelectItem value="weekly">تقرير أسبوعي</SelectItem>
+                                <SelectItem value="monthly">تقرير شهري</SelectItem>
+                                <SelectItem value="custom">نطاق مخصص</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
                      <div className="grid gap-2 w-full md:w-auto">
-                        <Label>Date range</Label>
+                        <Label>النطاق الزمني</Label>
                         <Popover>
                             <PopoverTrigger asChild>
                             <Button
@@ -84,7 +84,7 @@ export default function ReportsPage() {
                                 !date && "text-muted-foreground"
                                 )}
                             >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <CalendarIcon className="ml-2 h-4 w-4" />
                                 {date?.from ? (
                                 date.to ? (
                                     <>
@@ -95,7 +95,7 @@ export default function ReportsPage() {
                                     format(date.from, "LLL dd, y")
                                 )
                                 ) : (
-                                <span>Pick a date</span>
+                                <span>اختر تاريخ</span>
                                 )}
                             </Button>
                             </PopoverTrigger>
@@ -111,11 +111,11 @@ export default function ReportsPage() {
                             </PopoverContent>
                         </Popover>
                     </div>
-                    <div className="flex gap-2 w-full md:w-auto md:ml-auto pt-5">
-                        <Button className="w-full md:w-auto">Generate Report</Button>
+                    <div className="flex gap-2 w-full md:w-auto md:mr-auto pt-5">
+                        <Button className="w-full md:w-auto">إنشاء تقرير</Button>
                         <Button variant="outline" className="w-full md:w-auto">
-                            <Download className="mr-2 h-4 w-4" />
-                            Export
+                            <Download className="ml-2 h-4 w-4" />
+                            تصدير
                         </Button>
                     </div>
                 </CardContent>
@@ -123,18 +123,20 @@ export default function ReportsPage() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Generated Report</CardTitle>
-                    <CardDescription>Showing results for the selected period.</CardDescription>
+                    <CardTitle>عرض التقرير</CardTitle>
+                    <CardDescription>عرض النتائج للفترة المحددة.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                         <TableRow>
-                            <TableHead>Employee</TableHead>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Clock In</TableHead>
-                            <TableHead>Clock Out</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead>الموظف</TableHead>
+                            <TableHead>التاريخ</TableHead>
+                            <TableHead>وقت الحضور</TableHead>
+                            <TableHead>وقت الانصراف</TableHead>
+                            <TableHead>الحالة</TableHead>
+                            <TableHead>التكلفة (ل.س)</TableHead>
+                            <TableHead>التكلفة (USD)</TableHead>
                         </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -142,13 +144,15 @@ export default function ReportsPage() {
                             <TableRow key={record.id}>
                                 <TableCell className="font-medium">{record.employeeName}</TableCell>
                                 <TableCell>{format(new Date(), "LLL dd, y")}</TableCell>
-                                <TableCell>{record.status.includes("In") ? record.timestamp : "---"}</TableCell>
-                                <TableCell>{record.status.includes("Out") ? record.timestamp : "---"}</TableCell>
+                                <TableCell>{record.status.includes("حضور") || record.status.includes("تأخر") ? record.timestamp : "---"}</TableCell>
+                                <TableCell>{record.status.includes("انصراف") ? record.timestamp : "---"}</TableCell>
                                 <TableCell>
-                                    <Badge variant={record.status.includes("Late") || record.status.includes("Early") ? "destructive" : "secondary"}>
+                                    <Badge variant={record.status.includes("تأخر") || record.status.includes("مبكر") ? "destructive" : "secondary"}>
                                         {record.status}
                                     </Badge>
                                 </TableCell>
+                                <TableCell>50,000</TableCell>
+                                <TableCell>$3.50</TableCell>
                             </TableRow>
                         ))}
                         </TableBody>

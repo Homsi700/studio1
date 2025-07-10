@@ -27,7 +27,7 @@ export function AnomalyAnalyzer() {
       const analysisResult = await analyzeData();
       setResult(analysisResult);
     } catch (err) {
-      setError("An error occurred during analysis. Please try again.");
+      setError("حدث خطأ أثناء التحليل. يرجى المحاولة مرة أخرى.");
     } finally {
       setLoading(false);
     }
@@ -37,20 +37,20 @@ export function AnomalyAnalyzer() {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Analyze Attendance Data</CardTitle>
+          <CardTitle>تحليل بيانات الحضور</CardTitle>
           <CardDescription>
-            Use AI to scan for anomalies, discrepancies, and unusual patterns in your attendance records.
+            استخدم الذكاء الاصطناعي للبحث عن التجاوزات والاختلافات والأنماط غير العادية في سجلات الحضور.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Button onClick={handleAnalysis} disabled={loading}>
             {loading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Analyzing...
+                <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                جاري التحليل...
               </>
             ) : (
-              "Run AI Analysis"
+              "تشغيل تحليل AI"
             )}
           </Button>
         </CardContent>
@@ -59,7 +59,7 @@ export function AnomalyAnalyzer() {
       {error && (
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
+          <AlertTitle>خطأ</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
@@ -68,14 +68,14 @@ export function AnomalyAnalyzer() {
         <div className="grid gap-6 lg:grid-cols-2">
             <Alert>
                 <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>Detected Anomalies</AlertTitle>
+                <AlertTitle>التجاوزات المكتشفة</AlertTitle>
                 <AlertDescription className="whitespace-pre-wrap font-mono text-sm">
                     {result.anomalies}
                 </AlertDescription>
             </Alert>
             <Alert className="border-green-500 text-green-800">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <AlertTitle className="text-green-800">Recommendations</AlertTitle>
+                <AlertTitle className="text-green-800">التوصيات</AlertTitle>
                 <AlertDescription className="whitespace-pre-wrap font-mono text-sm text-green-700">
                     {result.recommendations}
                 </AlertDescription>

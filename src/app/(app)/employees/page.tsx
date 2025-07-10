@@ -30,34 +30,34 @@ export default function EmployeesPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Employee Management</h1>
-          <p className="text-muted-foreground">Add, edit, and manage employee data.</p>
+          <h1 className="text-3xl font-bold">إدارة الموظفين</h1>
+          <p className="text-muted-foreground">إضافة وتعديل وإدارة بيانات الموظفين.</p>
         </div>
         <EmployeeDialog>
           <Button>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Employee
+            <PlusCircle className="ml-2 h-4 w-4" />
+            إضافة موظف
           </Button>
         </EmployeeDialog>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Employee List</CardTitle>
+          <CardTitle>قائمة الموظفين</CardTitle>
           <CardDescription>
-            A list of all employees in the system.
+            قائمة بجميع الموظفين في النظام.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Employee ID</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Department</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>الرقم الوظيفي</TableHead>
+                <TableHead>الاسم</TableHead>
+                <TableHead>القسم</TableHead>
+                <TableHead>الحالة</TableHead>
                 <TableHead>
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">إجراءات</span>
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -68,8 +68,8 @@ export default function EmployeesPage() {
                   <TableCell className="font-medium">{employee.name}</TableCell>
                   <TableCell>{employee.department}</TableCell>
                   <TableCell>
-                    <Badge variant={employee.status === "Active" ? "default" : "secondary"}
-                      className={employee.status === "Active" ? "bg-green-600 text-white" : ""}>
+                    <Badge variant={employee.status === "نشط" ? "default" : "secondary"}
+                      className={employee.status === "نشط" ? "bg-green-600 text-white" : ""}>
                       {employee.status}
                     </Badge>
                   </TableCell>
@@ -78,14 +78,14 @@ export default function EmployeesPage() {
                       <DropdownMenuTrigger asChild>
                         <Button aria-haspopup="true" size="icon" variant="ghost">
                           <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
+                          <span className="sr-only">فتح القائمة</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <EmployeeDialog employee={employee}>
-                           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Edit</DropdownMenuItem>
+                           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>تعديل</DropdownMenuItem>
                         </EmployeeDialog>
-                        <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive">حذف</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
