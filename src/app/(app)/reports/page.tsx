@@ -80,11 +80,11 @@ export default function ReportsPage() {
                                 id="date"
                                 variant={"outline"}
                                 className={cn(
-                                "w-full md:w-[300px] justify-start text-left font-normal",
+                                "w-full md:w-[300px] justify-start text-right font-normal",
                                 !date && "text-muted-foreground"
                                 )}
                             >
-                                <CalendarIcon className="ml-2 h-4 w-4" />
+                                <CalendarIcon className="mr-2 h-4 w-4" />
                                 {date?.from ? (
                                 date.to ? (
                                     <>
@@ -111,10 +111,10 @@ export default function ReportsPage() {
                             </PopoverContent>
                         </Popover>
                     </div>
-                    <div className="flex gap-2 w-full md:w-auto md:mr-auto pt-5">
+                    <div className="flex gap-2 w-full md:w-auto md:ml-auto pt-5">
                         <Button className="w-full md:w-auto">إنشاء تقرير</Button>
                         <Button variant="outline" className="w-full md:w-auto">
-                            <Download className="ml-2 h-4 w-4" />
+                            <Download className="mr-2 h-4 w-4" />
                             تصدير
                         </Button>
                     </div>

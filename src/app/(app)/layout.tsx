@@ -50,7 +50,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen w-full">
-      <Sidebar collapsible="icon" className="border-l">
+      <Sidebar collapsible="icon" side="right" className="border-r">
         <SidebarHeader>
           <div className="flex items-center gap-2 p-2">
             <Fingerprint className="w-8 h-8 text-primary" />
@@ -64,7 +64,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <Link href={item.href} legacyBehavior passHref>
                   <SidebarMenuButton
                     isActive={pathname === item.href}
-                    tooltip={{ children: item.label }}
+                    tooltip={{ children: item.label, side: "left" }}
                   >
                     <item.icon />
                     <span>{item.label}</span>
@@ -77,7 +77,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarFooter>
            <SidebarMenu>
               <SidebarMenuItem>
-                 <SidebarMenuButton tooltip={{ children: "الإعدادات" }}>
+                 <SidebarMenuButton tooltip={{ children: "الإعدادات", side: "left" }}>
                     <Settings/>
                     <span>الإعدادات</span>
                  </SidebarMenuButton>
@@ -111,16 +111,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
                <DropdownMenuItem>
-                <Cloud className="ml-2 h-4 w-4" />
+                <Cloud className="mr-2 h-4 w-4" />
                 <span>نسخ احتياطي للبيانات</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <LifeBuoy className="ml-2 h-4 w-4" />
+                <LifeBuoy className="mr-2 h-4 w-4" />
                 <span>الدعم الفني</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <LogOut className="ml-2 h-4 w-4" />
+                <LogOut className="mr-2 h-4 w-4" />
                 <span>تسجيل الخروج</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

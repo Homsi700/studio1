@@ -46,7 +46,7 @@ export function AnomalyAnalyzer() {
           <Button onClick={handleAnalysis} disabled={loading}>
             {loading ? (
               <>
-                <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 جاري التحليل...
               </>
             ) : (
@@ -69,14 +69,14 @@ export function AnomalyAnalyzer() {
             <Alert>
                 <AlertTriangle className="h-4 w-4" />
                 <AlertTitle>التجاوزات المكتشفة</AlertTitle>
-                <AlertDescription className="whitespace-pre-wrap font-mono text-sm">
+                <AlertDescription className="whitespace-pre-wrap font-mono text-sm text-left">
                     {result.anomalies}
                 </AlertDescription>
             </Alert>
             <Alert className="border-green-500 text-green-800">
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 <AlertTitle className="text-green-800">التوصيات</AlertTitle>
-                <AlertDescription className="whitespace-pre-wrap font-mono text-sm text-green-700">
+                <AlertDescription className="whitespace-pre-wrap font-mono text-sm text-left text-green-700">
                     {result.recommendations}
                 </AlertDescription>
             </Alert>

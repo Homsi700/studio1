@@ -35,7 +35,7 @@ export default function EmployeesPage() {
         </div>
         <EmployeeDialog>
           <Button>
-            <PlusCircle className="ml-2 h-4 w-4" />
+            <PlusCircle className="mr-2 h-4 w-4" />
             إضافة موظف
           </Button>
         </EmployeeDialog>
@@ -64,7 +64,7 @@ export default function EmployeesPage() {
             <TableBody>
               {employees.map((employee) => (
                 <TableRow key={employee.id}>
-                  <TableCell className="font-mono">{employee.id}</TableCell>
+                  <TableCell className="font-mono text-left">{employee.id}</TableCell>
                   <TableCell className="font-medium">{employee.name}</TableCell>
                   <TableCell>{employee.department}</TableCell>
                   <TableCell>
