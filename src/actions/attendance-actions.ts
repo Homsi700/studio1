@@ -17,7 +17,10 @@ async function readDb(): Promise<DbData> {
                 jobTitles: [],
                 shifts: [],
                 employees: [],
-                attendanceRecords: []
+                attendanceRecords: [],
+                salaryRecords: [],
+                expenses: [],
+                leaves: []
             };
         }
         throw error;
@@ -31,48 +34,67 @@ export async function getAttendanceRecords(): Promise<AttendanceRecord[]> {
 
 export async function getAttendanceStats() {
     const db = await readDb();
-    const { employees } = db;
+    const { employees, attendanceRecords } = db;
+    const activeEmployees = employees.filter(e => e.status === 'نشط');
 
     const now = new Date();
-    const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
-    if (!isWorkHours) return { present: 0, late: 0, absent: employees.filter(e => e.status === 'نشط').length };
+    const today = now.toISOString().split('T')[0];
 
-    // This is mock logic, in a real app this would be based on real attendance data
-    const presentIds = ["1001", "1004", "1005", "1006"];
-    const lateIds = ["1002"];
+    // Filter today's attendance records
+    const todaysRecords = attendanceRecords.filter(r => new Date(r.date).toISOString().split('T')[0] === today);
+    
+    const presentIds = new Set<string>();
+    const lateIds = new Set<string>();
 
-    const present = employees.filter(e => e.status === 'نشط' && presentIds.includes(e.id)).length;
-    const late = employees.filter(e => e.status === 'نشط' && lateIds.includes(e.id)).length;
-    const absent = employees.filter(e => e.status === 'نشط' && !presentIds.includes(e.id) && !lateIds.includes(e.id)).length;
+    todaysRecords.forEach(record => {
+        if (record.status === 'حضور') {
+            presentIds.add(record.employeeId);
+        }
+        if (record.status === 'تأخر') {
+            lateIds.add(record.employeeId);
+            presentIds.add(record.employeeId); // Late is also present
+        }
+    });
 
+    const present = presentIds.size;
+    const late = lateIds.size;
+    
+    const absent = activeEmployees.filter(e => !presentIds.has(e.id)).length;
 
     return { present, late, absent };
 }
 
 export async function getEmployeesByStatus(status: 'present' | 'late' | 'absent'): Promise<Employee[]> {
     const db = await readDb();
-    const { employees } = db;
+    const { employees, attendanceRecords } = db;
+    const activeEmployees = employees.filter(e => e.status === 'نشط');
     
     const now = new Date();
-    const isWorkHours = now.getHours() >= 8 && now.getHours() < 17;
-    const activeEmployees = employees.filter(e => e.status === 'نشط');
+    const today = now.toISOString().split('T')[0];
+    
+    const todaysRecords = attendanceRecords.filter(r => new Date(r.date).toISOString().split('T')[0] === today);
 
-    if (!isWorkHours) {
-        return status === 'absent' ? activeEmployees : [];
-    }
+    const presentIds = new Set<string>();
+    const lateIds = new Set<string>();
 
-    // This is mock logic, in a real app this would be based on real attendance data
-    const presentIds = ["1001", "1004", "1005", "1006"];
-    const lateIds = ["1002"];
+    todaysRecords.forEach(record => {
+        if (record.status === 'حضور') {
+            presentIds.add(record.employeeId);
+        }
+        if (record.status === 'تأخر') {
+            lateIds.add(record.employeeId);
+            presentIds.add(record.employeeId);
+        }
+    });
 
     if (status === 'present') {
-        return activeEmployees.filter(e => presentIds.includes(e.id));
+        return activeEmployees.filter(e => presentIds.has(e.id) && !lateIds.has(e.id));
     }
     if (status === 'late') {
-        return activeEmployees.filter(e => lateIds.includes(e.id));
+        return activeEmployees.filter(e => lateIds.has(e.id));
     }
     if (status === 'absent') {
-        return activeEmployees.filter(e => !presentIds.includes(e.id) && !lateIds.includes(e.id));
+        return activeEmployees.filter(e => !presentIds.has(e.id));
     }
 
     return [];

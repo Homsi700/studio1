@@ -56,6 +56,7 @@ export type AttendanceRecord = {
   timestamp: string;
   status: "حضور" | "انصراف" | "تأخر" | "انصراف مبكر";
   avatar: string;
+  date: string; // YYYY-MM-DD
 };
 
 export type DbData = {
